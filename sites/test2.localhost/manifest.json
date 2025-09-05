@@ -1,0 +1,83 @@
+{
+    "theme": "classic",
+    "locales": [
+        "en",
+        "es"
+    ],
+    "default_locale": "en",
+    "pages": [
+        {
+            "slug": "home",
+            "title": "Welcome to My Test Site",
+            "html": "<h1>Welcome to My Test Site</h1><p>This is a sample homepage created by the Instasites builder API.</p><p>This site demonstrates the static website generation capabilities with Apache virtual host integration.</p>",
+            "meta_title": "Welcome - My Test Site",
+            "meta_description": "Welcome to my test site built with Instasites",
+            "locale": "en"
+        },
+        {
+            "slug": "home",
+            "title": "Bienvenido a Mi Sitio de Prueba",
+            "html": "<h1>Bienvenido a Mi Sitio de Prueba</h1><p>Esta es una p\u00e1gina de inicio de muestra creada por la API del constructor Instasites.</p><p>Este sitio demuestra las capacidades de generaci\u00f3n de sitios web est\u00e1ticos con integraci\u00f3n de host virtual Apache.</p>",
+            "meta_title": "Bienvenido - Mi Sitio de Prueba",
+            "meta_description": "Bienvenido a mi sitio de prueba construido con Instasites",
+            "locale": "es"
+        },
+        {
+            "slug": "about",
+            "title": "About Us",
+            "html": "<h1>About Us</h1><p>We are a company that builds amazing websites using modern technology.</p><ul><li>Fast static site generation</li><li>Multiple language support</li><li>Automatic Apache configuration</li><li>SEO optimized</li></ul>",
+            "meta_title": "About Us - My Test Site",
+            "meta_description": "Learn more about our company and what we do",
+            "locale": "en"
+        },
+        {
+            "slug": "about",
+            "title": "Acerca de Nosotros",
+            "html": "<h1>Acerca de Nosotros</h1><p>Somos una empresa que construye sitios web incre\u00edbles usando tecnolog\u00eda moderna.</p><ul><li>Generaci\u00f3n r\u00e1pida de sitios est\u00e1ticos</li><li>Soporte para m\u00faltiples idiomas</li><li>Configuraci\u00f3n autom\u00e1tica de Apache</li><li>Optimizado para SEO</li></ul>",
+            "meta_title": "Acerca de Nosotros - Mi Sitio de Prueba",
+            "meta_description": "Aprende m\u00e1s sobre nuestra empresa y lo que hacemos",
+            "locale": "es"
+        },
+        {
+            "slug": "services",
+            "title": "Our Services",
+            "html": "<h1>Our Services</h1><div class='services'><h2>Web Development</h2><p>Custom websites built with modern technologies.</p><h2>Static Site Generation</h2><p>Fast, secure, and SEO-friendly static websites.</p><h2>Apache Configuration</h2><p>Automated server configuration and management.</p></div>",
+            "meta_title": "Services - My Test Site",
+            "meta_description": "Discover our web development and static site generation services",
+            "locale": "en"
+        },
+        {
+            "slug": "contact",
+            "title": "Contact Us",
+            "html": "<h1>Contact Us</h1><p>Get in touch with us for your next project.</p><div class='contact-info'><p><strong>Email:</strong> hello@test.localhost</p><p><strong>Phone:</strong> +1 (555) 123-4567</p><p><strong>Address:</strong> 123 Web Street, Internet City, IC 12345</p></div>",
+            "meta_title": "Contact Us - My Test Site",
+            "meta_description": "Contact us for your web development needs",
+            "locale": "en"
+        }
+    ],
+    "posts": [
+        {
+            "slug": "welcome-post",
+            "title": "Welcome to Our Blog",
+            "html": "<h1>Welcome to Our Blog</h1><p>This is our first blog post! We're excited to share our journey in building amazing websites.</p><p>In this blog, we'll cover topics like:</p><ul><li>Web development best practices</li><li>Static site generation</li><li>Server configuration</li><li>SEO optimization</li></ul><p>Stay tuned for more updates!</p>",
+            "meta_title": "Welcome to Our Blog - My Test Site",
+            "meta_description": "Our first blog post about web development and static sites",
+            "author": "John Doe",
+            "category": "General",
+            "published_at": "2024-01-15T10:00:00Z",
+            "locale": "en"
+        },
+        {
+            "slug": "static-sites-benefits",
+            "title": "Benefits of Static Sites",
+            "html": "<h1>Benefits of Static Sites</h1><p>Static sites offer numerous advantages over dynamic websites:</p><h2>Performance</h2><p>Static sites load incredibly fast since there's no server-side processing required.</p><h2>Security</h2><p>With no database or server-side code, static sites have a much smaller attack surface.</p><h2>Scalability</h2><p>Static sites can handle massive traffic spikes without breaking a sweat.</p><h2>Cost-Effective</h2><p>Hosting static sites is much cheaper than dynamic sites.</p>",
+            "meta_title": "Benefits of Static Sites - My Test Site",
+            "meta_description": "Learn about the advantages of static websites over dynamic ones",
+            "author": "Jane Smith",
+            "category": "Technology",
+            "published_at": "2024-01-20T14:30:00Z",
+            "locale": "en"
+        }
+    ],
+    "built_at": "2025-09-05T15:59:55+00:00"
+}

@@ -124,12 +124,21 @@ return [
     ],
 
     'providers' => [
-        // ...
+        // Essential providers only (no DB, no cache, no queue, no mail)
+        Illuminate\Foundation\Providers\FoundationServiceProvider::class,
+        Illuminate\Routing\RoutingServiceProvider::class,
+        Illuminate\Pipeline\PipelineServiceProvider::class,
+
+        Illuminate\Encryption\EncryptionServiceProvider::class,
+        Illuminate\Cookie\CookieServiceProvider::class,
+
         Illuminate\Filesystem\FilesystemServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Illuminate\Validation\ValidationServiceProvider::class,   // <- add
-        Illuminate\Translation\TranslationServiceProvider::class, // <- validator depends on translator
-        Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class, // for clear commands
+
+        Illuminate\Validation\ValidationServiceProvider::class,
+        Illuminate\Translation\TranslationServiceProvider::class,
+
+        Illuminate\Foundation\Providers\ConsoleSupportServiceProvider::class,
     ],
     'aliases' => [
         // ...

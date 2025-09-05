@@ -3,11 +3,16 @@
 namespace App\Services\Instasites;
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 
 class SiteBuilderService
 {
+  public function __construct(
+    private ApacheVirtualHostService $apacheService
+  ) {}
+
   public function build(string $hostname, array $payload): array
   {
     $root    = rtrim(config('instasites.sites_root'), '/')."/{$hostname}";
@@ -40,22 +45,39 @@ class SiteBuilderService
     ];
     File::put("{$root}/manifest.json", json_encode($manifest, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
 
+    // Create Apache virtual host
+    $vhostCreated = $this->apacheService->createVirtualHost($hostname, $public);
+    if (!$vhostCreated) {
+      Log::warning("Failed to create Apache virtual host for {$hostname}");
+    }
+
     return [
       'job_id'      => Str::lower(Str::random(8)),
       'pages_count' => count($pages),
       'posts_count' => count($posts),
       'manifest'    => $manifest,
+      'apache_vhost_created' => $vhostCreated,
     ];
   }
 
   public function reset(string $hostname): bool
   {
     $root = rtrim(config('instasites.sites_root'), '/')."/{$hostname}";
+    $deleted = false;
+
     if (is_dir($root)) {
       File::deleteDirectory($root);
-      return true;
+      $deleted = true;
+      Log::info("Deleted site directory for {$hostname}");
     }
-    return false;
+
+    // Remove Apache virtual host
+    $vhostRemoved = $this->apacheService->removeVirtualHost($hostname);
+    if (!$vhostRemoved) {
+      Log::warning("Failed to remove Apache virtual host for {$hostname}");
+    }
+
+    return $deleted;
   }
 
     private function copyThemeAssets(string $theme, string $dest, array $cfg): array

@@ -1,0 +1,26 @@
+{
+  "blueprint": {
+    "site_name": "Minimal Site",
+    "primary_domain": "minimal.localhost",
+    "default_locale": "en",
+    "theme": {
+      "name": "classic",
+      "logoText": "Minimal"
+    }
+  },
+  "locales": ["en"],
+  "pages": [
+    {
+      "slug": "home",
+      "locale": "en",
+      "title": "Minimal Site",
+      "html": "<h1>Hello World</h1><p>This is a minimal site example.</p>",
+      "meta_title": "Minimal Site",
+      "meta_description": "A simple minimal website"
+    }
+  ],
+  "posts": [],
+  "dns": {
+    "hostname": "minimal.localhost"
+  }
+}

@@ -12,9 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Global middleware (applied to all requests)
-        $middleware->use([
-            \App\Http\Middleware\BuilderKeyMiddleware::class,
+        // Remove problematic middleware for now
+        $middleware->remove([
+            \Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance::class,
         ]);
 
         // Named (aliased) middleware

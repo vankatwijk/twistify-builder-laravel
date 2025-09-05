@@ -32,6 +32,7 @@ class BuildController extends Controller
       'theme'          => $result['manifest']['theme'],
       'locales'        => $result['manifest']['locales'],
       'default_locale' => $result['manifest']['default_locale'],
+      'apache_vhost_created' => $result['apache_vhost_created'] ?? false,
     ]);
   }
 
