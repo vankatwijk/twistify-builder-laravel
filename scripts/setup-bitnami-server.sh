@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Bitnami LAMP Server Setup Script for Instasites
+# Bitnami LAMP Server Setup Script for twistify-builder-laravel
 # Usage: sudo ./scripts/setup-bitnami-server.sh
-# This script configures a Bitnami LAMP server for the Instasites application
+# This script configures a Bitnami LAMP server for the twistify-builder-laravel application
 
 set -e
 
@@ -20,7 +20,7 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-echo -e "${BLUE}🚀 Setting up Bitnami LAMP Server for Instasites${NC}"
+echo -e "${BLUE}🚀 Setting up Bitnami LAMP Server for twistify-builder-laravel${NC}"
 echo "=================================================="
 echo ""
 
@@ -90,16 +90,16 @@ chmod -R 755 /opt/bitnami/apache2/conf/sites-available
 chmod -R 755 /opt/bitnami/apache2/conf/sites-enabled
 
 # Laravel application directory (if exists)
-if [ -d "/opt/bitnami/apache2/htdocs/instasites" ]; then
-    chown -R $BITNAMI_USER:daemon /opt/bitnami/apache2/htdocs/instasites
-    chmod -R 755 /opt/bitnami/apache2/htdocs/instasites
+if [ -d "/opt/bitnami/apache2/htdocs/twistify-builder-laravel" ]; then
+    chown -R $BITNAMI_USER:daemon /opt/bitnami/apache2/htdocs/twistify-builder-laravel
+    chmod -R 755 /opt/bitnami/apache2/htdocs/twistify-builder-laravel
 
     # Laravel specific permissions
-    if [ -d "/opt/bitnami/apache2/htdocs/instasites/storage" ]; then
-        chmod -R 775 /opt/bitnami/apache2/htdocs/instasites/storage
+    if [ -d "/opt/bitnami/apache2/htdocs/twistify-builder-laravel/storage" ]; then
+        chmod -R 775 /opt/bitnami/apache2/htdocs/twistify-builder-laravel/storage
     fi
-    if [ -d "/opt/bitnami/apache2/htdocs/instasites/bootstrap/cache" ]; then
-        chmod -R 775 /opt/bitnami/apache2/htdocs/instasites/bootstrap/cache
+    if [ -d "/opt/bitnami/apache2/htdocs/twistify-builder-laravel/bootstrap/cache" ]; then
+        chmod -R 775 /opt/bitnami/apache2/htdocs/twistify-builder-laravel/bootstrap/cache
     fi
 fi
 
@@ -168,9 +168,9 @@ chmod 440 /etc/sudoers.d/bitnami-apache
 
 # 10. Create environment configuration template
 echo -e "${BLUE}10. Creating environment configuration...${NC}"
-if [ ! -f "/home/$BITNAMI_USER/.env.instasites" ]; then
-    cat > "/home/$BITNAMI_USER/.env.instasites" << EOF
-# Instasites Configuration for Bitnami LAMP
+if [ ! -f "/home/$BITNAMI_USER/.env.twistify" ]; then
+    cat > "/home/$BITNAMI_USER/.env.twistify" << EOF
+# twistify-builder-laravel Configuration for Bitnami LAMP
 SITES_ROOT=/var/www/html/sites
 APACHE_SITES_AVAILABLE=/opt/bitnami/apache2/conf/sites-available
 APACHE_SITES_ENABLED=/opt/bitnami/apache2/conf/sites-enabled
@@ -178,8 +178,8 @@ APACHE_RELOAD_COMMAND="sudo /opt/bitnami/ctlscript.sh reload apache"
 APACHE_INTEGRATION_ENABLED=true
 BUILDER_API_KEY=your-secure-api-key-here
 EOF
-    chown $BITNAMI_USER:$BITNAMI_USER "/home/$BITNAMI_USER/.env.instasites"
-    chmod 600 "/home/$BITNAMI_USER/.env.instasites"
+    chown $BITNAMI_USER:$BITNAMI_USER "/home/$BITNAMI_USER/.env.twistify"
+    chmod 600 "/home/$BITNAMI_USER/.env.twistify"
 fi
 
 # 11. Test Apache configuration
@@ -191,27 +191,17 @@ else
     echo "Please check the configuration before restarting Apache"
 fi
 
-# 12. Create deployment directory
-echo -e "${BLUE}12. Creating deployment directory...${NC}"
-DEPLOY_DIR="/opt/bitnami/apache2/htdocs/instasites"
-if [ ! -d "$DEPLOY_DIR" ]; then
-    mkdir -p "$DEPLOY_DIR"
-    chown $BITNAMI_USER:daemon "$DEPLOY_DIR"
-    chmod 755 "$DEPLOY_DIR"
-    echo "Laravel application should be deployed to: $DEPLOY_DIR"
-fi
-
 # 13. Create log directories
 echo -e "${BLUE}13. Setting up logging...${NC}"
-mkdir -p /var/log/instasites
-chown $BITNAMI_USER:daemon /var/log/instasites
-chmod 755 /var/log/instasites
+mkdir -p /var/log/twistify-builder-laravel
+chown $BITNAMI_USER:daemon /var/log/twistify-builder-laravel
+chmod 755 /var/log/twistify-builder-laravel
 
 # 14. Create systemd service for Laravel queue (optional)
 echo -e "${BLUE}14. Creating Laravel queue service template...${NC}"
-cat > /etc/systemd/system/instasites-queue.service << EOF
+cat > /etc/systemd/system/twistify-builder-laravel-queue.service << EOF
 [Unit]
-Description=Instasites Queue Worker
+Description=twistify-builder-laravel Queue Worker
 After=network.target
 
 [Service]
@@ -229,14 +219,14 @@ EOF
 
 # Don't enable the service yet - wait for Laravel deployment
 echo "Queue service created but not enabled. Enable after Laravel deployment with:"
-echo "  sudo systemctl enable instasites-queue"
-echo "  sudo systemctl start instasites-queue"
+echo "  sudo systemctl enable twistify-builder-laravel-queue"
+echo "  sudo systemctl start twistify-builder-laravel-queue"
 
 # 15. Create backup script
 echo -e "${BLUE}15. Creating backup script...${NC}"
 cat > "/home/$BITNAMI_USER/backup-sites.sh" << 'EOF'
 #!/bin/bash
-# Backup script for Instasites
+# Backup script for twistify-builder-laravel
 BACKUP_DIR="/home/bitnami/backups"
 SITES_DIR="/var/www/html/sites"
 DATE=$(date +%Y%m%d_%H%M%S)
@@ -275,13 +265,13 @@ echo "  ✅ Backup script created"
 echo ""
 echo -e "${YELLOW}📝 Next steps:${NC}"
 echo "1. Deploy your Laravel application to: $DEPLOY_DIR"
-echo "2. Copy environment settings from: /home/$BITNAMI_USER/.env.instasites"
+echo "2. Copy environment settings from: /home/$BITNAMI_USER/.env.twistify"
 echo "3. Update your Laravel .env file with the Bitnami-specific paths"
 echo "4. Run: composer install --optimize-autoloader --no-dev"
 echo "5. Run: php artisan key:generate"
 echo "6. Run: php artisan config:cache"
 echo "7. Restart Apache: sudo /opt/bitnami/ctlscript.sh restart apache"
-echo "8. Test the API: curl http://your-server-ip/instasites/api/health"
+echo "8. Test the API: curl http://your-server-ip/twistify-builder-laravel/api/health"
 echo ""
 echo -e "${BLUE}🔧 Useful commands:${NC}"
 echo "  Restart Apache: sudo /opt/bitnami/ctlscript.sh restart apache"
@@ -291,4 +281,4 @@ echo "  Backup sites: /home/$BITNAMI_USER/backup-sites.sh"
 echo "  Check disk usage: df -h"
 echo "  Check site permissions: ls -la $SITES_ROOT"
 echo ""
-echo -e "${GREEN}🎉 Your Bitnami LAMP server is ready for Instasites!${NC}"
+echo -e "${GREEN}🎉 Your Bitnami LAMP server is ready for twistify-builder-laravel!${NC}"
