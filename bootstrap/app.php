@@ -13,9 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         // Global middleware (applied to all requests)
-        $middleware->use([
-            \App\Http\Middleware\BuilderKeyMiddleware::class,
-        ]);
+        // $middleware->use([
+        //     \App\Http\Middleware\BuilderKeyMiddleware::class,
+        // ]);
 
         // Named (aliased) middleware
         $middleware->alias([
