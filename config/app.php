@@ -119,8 +119,10 @@ return [
     */
 
     'maintenance' => [
+        // use simple file-based maintenance
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
-        'store' => env('APP_MAINTENANCE_STORE', 'database'),
+        // only used if you switch to 'cache'
+        'store'  => env('APP_MAINTENANCE_STORE', null),
     ],
 
     'providers' => [
