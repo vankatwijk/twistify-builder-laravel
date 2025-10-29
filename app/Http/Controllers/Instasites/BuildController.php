@@ -43,51 +43,80 @@ class BuildController extends Controller
     return response()->json(['ok'=>true,'message'=>"Deleted {$host}", 'deleted'=>$deleted]);
   }
 
-    private function validatePayload(array $in){
-        return \Illuminate\Support\Facades\Validator::make($in, [
-            // --- blueprint ---
-            'blueprint.site_name'       => 'required|string',
-            'blueprint.primary_domain'  => 'required|string',
-            'blueprint.default_locale'  => 'nullable|string',
-            'blueprint.theme'           => 'nullable|array',
-            'blueprint.theme.name'      => 'nullable|string',
-            'blueprint.theme.logoText'  => 'nullable|string',
-            'blueprint.theme.primaryColor' => 'nullable|string',
-            'blueprint.theme.accentColor'  => 'nullable|string',
-            'blueprint.theme.font'      => 'nullable|string',
-            'blueprint.theme.nav'       => 'nullable|array',
-            'blueprint.settings'        => 'nullable|array',
+  private function validatePayload(array $in){
+      return \Illuminate\Support\Facades\Validator::make($in, [
+          // --- blueprint ---
+          'blueprint.site_name'       => 'required|string',
+          'blueprint.primary_domain'  => 'required|string',
+          'blueprint.default_locale'  => 'nullable|string',
+          'blueprint.theme'           => 'nullable|array',
+          'blueprint.theme.name'      => 'nullable|string',
+          'blueprint.theme.logoText'  => 'nullable|string',
+          'blueprint.theme.primaryColor' => 'nullable|string',
+          'blueprint.theme.accentColor'  => 'nullable|string',
+          'blueprint.theme.font'      => 'nullable|string',
+          'blueprint.theme.nav'       => 'nullable|array',
+          'blueprint.settings'        => 'nullable|array',
 
-            // --- locales ---
-            'locales'                   => 'nullable|array',
+          // --- locales ---
+          'locales'                   => 'nullable|array',
 
-            // --- pages ---
-            'pages'                     => 'nullable|array',
-            'pages.*.slug'              => 'required_with:pages|string',
-            'pages.*.title'             => 'nullable|string',
-            'pages.*.html'              => 'nullable|string',          // <— KEEP THE HTML
-            'pages.*.meta_title'        => 'nullable|string',
-            'pages.*.meta_description'  => 'nullable|string',
-            'pages.*.media_links'       => 'nullable|array',
-            'pages.*.locale'            => 'nullable|string',
+          // --- pages ---
+          'pages'                     => 'nullable|array',
+          'pages.*.slug'              => 'required_with:pages|string',
+          'pages.*.title'             => 'nullable|string',
+          'pages.*.html'              => 'nullable|string',          // <— KEEP THE HTML
+          'pages.*.meta_title'        => 'nullable|string',
+          'pages.*.meta_description'  => 'nullable|string',
+          'pages.*.media_links'       => 'nullable|array',
+          'pages.*.locale'            => 'nullable|string',
 
-            // --- posts ---
-            'posts'                     => 'nullable|array',
-            'posts.*.slug'              => 'required_with:posts|string',
-            'posts.*.title'             => 'nullable|string',
-            'posts.*.html'              => 'nullable|string',          // <— KEEP THE HTML
-            'posts.*.meta_title'        => 'nullable|string',
-            'posts.*.meta_description'  => 'nullable|string',
-            'posts.*.author'            => 'nullable|string',
-            'posts.*.category'          => 'nullable|string',
-            'posts.*.published_at'      => 'nullable|string',
-            'posts.*.media_links'       => 'nullable|array',
-            'posts.*.locale'            => 'nullable|string',
+          // --- posts ---
+          'posts'                     => 'nullable|array',
+          'posts.*.slug'              => 'required_with:posts|string',
+          'posts.*.title'             => 'nullable|string',
+          'posts.*.html'              => 'nullable|string',          // <— KEEP THE HTML
+          'posts.*.meta_title'        => 'nullable|string',
+          'posts.*.meta_description'  => 'nullable|string',
+          'posts.*.author'            => 'nullable|string',
+          'posts.*.category'          => 'nullable|string',
+          'posts.*.published_at'      => 'nullable|string',
+          'posts.*.media_links'       => 'nullable|array',
+          'posts.*.locale'            => 'nullable|string',
 
-            // --- dns / misc ---
-            'dns'                       => 'nullable|array',
-            'dns.hostname'              => 'nullable|string',
-            'reset'                     => 'nullable|boolean',
-        ])->validate();
-    }
+          // --- dns / misc ---
+          'dns'                       => 'nullable|array',
+          'dns.hostname'              => 'nullable|string',
+          'reset'                     => 'nullable|boolean',
+      ])->validate();
+  }
+
+  // app/Http/Controllers/Instasites/BuildController.php
+  public function upsertPost(Request $r){
+      $data = $r->validate([
+          'hostname'          => 'required|string',
+          'locale'            => 'nullable|string',
+          'post.title'        => 'required|string',
+          'post.slug'         => 'required|string',
+          'post.html'         => 'required|string',
+          'post.meta_title'   => 'nullable|string',
+          'post.meta_description'=>'nullable|string',
+          'post.author'       => 'nullable|string',
+          'post.category'     => 'nullable|string',
+          'post.published_at' => 'nullable|string',
+          'post.media_links'  => 'array',
+          'blueprint'         => 'array', // optional override (theme/colors/nav)
+      ]);
+
+      [$ok,$res] = $this->builder->upsertPost(
+          $data['hostname'],
+          $data['post'],
+          $data['locale'] ?? null,
+          $data['blueprint'] ?? null
+      );
+
+      return $ok
+        ? response()->json(['ok'=>true]+$res)
+        : response()->json(['ok'=>false,'error'=>$res['error'] ?? 'failed'], 422);
+  }
 }

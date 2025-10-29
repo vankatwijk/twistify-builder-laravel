@@ -20,4 +20,6 @@ Route::get('/health', function () {
 Route::middleware('builder.key')->group(function () {
   Route::post('/build', [BuildController::class, 'build']); // POST /api/build
   Route::post('/reset', [BuildController::class, 'reset']); // POST /api/reset
+  Route::post('/upsert-post', [BuildController::class,'upsertPost']); // NEW
+
 });

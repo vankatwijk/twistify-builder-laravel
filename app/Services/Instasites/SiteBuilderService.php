@@ -8,6 +8,100 @@ use Illuminate\Support\Str;
 
 class SiteBuilderService
 {
+  public function upsertPost(string $host, array $post, ?string $locale=null, ?array $bpOverride=null): array
+  {
+      $root    = rtrim(config('instasites.sites_root'), '/')."/{$host}";
+      $public  = "{$root}/public";
+      $manifestPath = "{$root}/manifest.json";
+
+      if (!is_dir($public)) {
+          // first-touch safety: ensure dirs
+          File::ensureDirectoryExists($public);
+      }
+
+      // Load existing manifest or create a minimal one
+      $manifest = is_file($manifestPath)
+          ? json_decode(file_get_contents($manifestPath), true) ?: []
+          : [];
+
+      $default   = data_get($manifest, 'default_locale', data_get($bpOverride,'default_locale','en'));
+      $locales   = data_get($manifest, 'locales', data_get($bpOverride,'locales', [$default]));
+      $blueprint = $bpOverride ?: (data_get($manifest,'blueprint') ?? [
+          'site_name' => $host,
+          'primary_domain' => $host,
+          'default_locale' => $default,
+          'theme' => ['name'=> data_get($manifest,'theme','classic')],
+      ]);
+      $theme     = Str::lower(data_get($blueprint, 'theme.name', data_get($manifest,'theme','classic')));
+
+      if (!in_array($default, $locales, true)) $locales[] = $default;
+
+      // normalize locale
+      $loc = $locale ?: $default;
+
+      // ensure theme assets exist (once)
+      $this->copyThemeAssets($theme, "{$public}/assets/{$theme}", data_get($blueprint,'theme',[]));
+
+      // merge into manifest posts (idempotent by slug+locale)
+      $posts = data_get($manifest,'posts',[]);
+      $slug  = trim($post['slug'],'/');
+      $post['locale'] = $loc;
+      $replaced = false;
+
+      foreach ($posts as $i=>$p) {
+          if (($p['locale'] ?? $default)===$loc && trim($p['slug']??'','/')===$slug) {
+              $posts[$i] = array_merge($p, $post);
+              $replaced = true;
+              break;
+          }
+      }
+      if (!$replaced) $posts[] = $post;
+
+      // write the single post page
+      $viewBase   = "instasites.themes.{$theme}";
+      $layoutView = "{$viewBase}.layouts.base";
+      $basePath   = $loc===$default ? $public : "{$public}/{$loc}";
+      $outDir     = "{$basePath}/blog/{$slug}";
+      File::ensureDirectoryExists($outDir);
+
+      $canonical  = "https://{$host}".($loc===$default?'':"/{$loc}")."/blog/{$slug}/";
+      $html = view("{$viewBase}.post", [
+          'layout_view'    => $layoutView,
+          'blueprint'      => $blueprint,
+          'post'           => $post,
+          'locale'         => $loc,
+          'locales'        => $locales,
+          'defaultLocale'  => $default,
+          'canonical'      => $canonical,
+          // flat fields if your theme expects them
+          'title'          => $post['title'] ?? '',
+          'metaTitle'      => $post['meta_title'] ?? ($post['title'] ?? ''),
+          'metaDescription'=> $post['meta_description'] ?? '',
+          'contentHtml'    => (string)($post['html'] ?? ''),
+      ])->render();
+
+      file_put_contents("{$outDir}/index.html", $html);
+
+      // re-generate sitemap + locale RSS only (cheap)
+      $manifest['theme']          = $theme;
+      $manifest['locales']        = array_values(array_unique($locales));
+      $manifest['default_locale'] = $default;
+      $manifest['blueprint']      = $blueprint;
+      $manifest['posts']          = $posts;
+      $manifest['built_at']       = now()->toIso8601String();
+
+      File::put($manifestPath, json_encode($manifest, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
+
+      $this->makeSitemap($public, $host, $manifest['locales'], $default, data_get($manifest,'pages',[]), $posts);
+      $this->makeRssFeeds($public, $host, $manifest['locales'], $default, $posts);
+
+      return [true, [
+          'hostname'=>$host,
+          'slug'=>$slug,
+          'locale'=>$loc,
+      ]];
+  }
+
   public function build(string $hostname, array $payload): array
   {
     $root    = rtrim(config('instasites.sites_root'), '/')."/{$hostname}";
