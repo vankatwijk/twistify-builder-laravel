@@ -1,0 +1,43 @@
+{
+  "name": "Campbell",
+  "description": "A Laravel theme inspired by the design of Craig Campbell SEO.",
+  "version": "1.0.0",
+  "author": "Your Name",
+  "license": "MIT",
+  "assets": {
+    "css": [
+      "assets/css/campbell.css",
+      "assets/css/style.css"
+    ],
+    "js": [
+      "assets/js/main.js"
+    ],
+    "fonts": [
+      "assets/fonts/"
+    ]
+  },
+  "partials": [
+    "partials/header.blade.php",
+    "partials/nav.blade.php",
+    "partials/hero.blade.php",
+    "partials/about.blade.php",
+    "partials/services.blade.php",
+    "partials/case-studies.blade.php",
+    "partials/testimonials.blade.php",
+    "partials/contact-cta.blade.php",
+    "partials/footer.blade.php",
+    "partials/lang-switcher.blade.php"
+  ],
+  "components": [
+    "components/card.blade.php",
+    "components/button.blade.php"
+  ],
+  "layouts": [
+    "layouts/base.blade.php"
+  ],
+  "files": [
+    "page.blade.php",
+    "post.blade.php",
+    "README.md"
+  ]
+}

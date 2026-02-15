@@ -1,24 +1,36 @@
-<header class="cyb-header">
-  <div class="container cyb-nav">
-    <a class="cyb-logo" href="{{ $locale === $defaultLocale ? '/' : "/$locale/" }}">
-      <span class="cyb-logo-mark">◉</span>
-      <span>{{ $blueprint['theme']['logoText'] ?? $blueprint['site_name'] ?? 'Site' }}</span>
+@php
+  $site    = $blueprint['site_name'] ?? 'Site';
+  $ctaText = $blueprint['theme']['cta']['text'] ?? 'New Project';
+  $ctaHref = $blueprint['theme']['cta']['href'] ?? '#';
+@endphp
+
+<header class="gen-header">
+  <div class="container gen-nav">
+    <a class="gen-logo" href="/">
+      <span class="gen-logo-dot"></span>
+      <span class="gen-logo-text">{{ $site }}</span>
     </a>
 
-    @if(!empty($navItems))
-      <nav class="cyb-menu">
-        @foreach($navItems as $item)
-          <a class="cyb-link" href="{{ $item['href'] }}">{{ $item['title'] }}</a>
-        @endforeach
-      </nav>
-    @endif
-  </div>
+    {{-- Desktop --}}
+    <nav class="nav-desktop" aria-label="Primary">
+      @foreach(($navItems ?? []) as $item)
+        <a class="gen-link" href="{{ $item['href'] }}">{{ $item['title'] }}</a>
+      @endforeach
+      <a class="gen-cta" href="{{ $ctaHref }}">{{ $ctaText }}</a>
+    </nav>
 
-  {{-- subtle hero bar --}}
-  <div class="cyb-hero">
-    <div class="container">
-      <h1 class="cyb-hero-title">{{ $blueprint['site_name'] ?? 'Welcome' }}</h1>
-      <p class="cyb-hero-sub">fast • static • multilingual</p>
-    </div>
+    {{-- Mobile --}}
+    <details class="nav-mobile">
+      <summary class="nav-mobile-toggle">
+        <span class="burger"></span><span class="burger"></span><span class="burger"></span>
+        <span class="nav-mobile-label">Menu</span>
+      </summary>
+      <nav class="nav-mobile-panel" aria-label="Primary mobile">
+        @foreach(($navItems ?? []) as $item)
+          <a class="gen-link" href="{{ $item['href'] }}">{{ $item['title'] }}</a>
+        @endforeach
+        <a class="gen-cta" href="{{ $ctaHref }}">{{ $ctaText }}</a>
+      </nav>
+    </details>
   </div>
 </header>

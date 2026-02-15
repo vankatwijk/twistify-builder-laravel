@@ -1,0 +1,134 @@
+/* Cyberchat theme
+   Uses CSS variables injected by vars.css:
+   :root{ --primary: #2563eb; --accent: #a855f7; }
+*/
+:root {
+  --bg: #0b0f17;
+  --panel: #0f1524;
+  --text: #e6e9f0;
+  --muted: #9aa3b2;
+  --outline: rgba(255,255,255,0.06);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body.cyb-body {
+  background: radial-gradient(1200px 800px at 10% -10%, rgba(37,99,235,0.12), transparent 55%),
+              radial-gradient(900px 600px at 110% 10%, rgba(168,85,247,0.12), transparent 60%),
+              var(--bg);
+  color: var(--text);
+  font: 16px/1.6 Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, sans-serif;
+}
+
+.container { width: min(1100px, 92vw); margin: 0 auto; }
+
+.cyb-grid { display: grid; grid-template-rows: auto 1fr auto; min-height: 100vh; }
+
+/* Header / nav */
+.cyb-header {
+  position: relative;
+  border-bottom: 1px solid var(--outline);
+  background:
+    linear-gradient(90deg, rgba(37,99,235,0.15), rgba(168,85,247,0.15)) border-box;
+}
+.cyb-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 0;
+}
+.cyb-logo {
+  display: inline-flex; align-items: center; gap: 10px;
+  color: var(--text); text-decoration: none; font-weight: 700; letter-spacing: 0.3px;
+  text-shadow: 0 0 8px color-mix(in srgb, var(--primary) 40%, transparent);
+}
+.cyb-logo-mark {
+  display: inline-grid; place-items: center;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, var(--accent), var(--primary));
+  box-shadow: 0 0 18px var(--accent), 0 0 28px color-mix(in srgb, var(--primary) 60%, transparent);
+}
+.cyb-menu { display: flex; gap: 16px; }
+.cyb-link {
+  color: var(--text); text-decoration: none; padding: 8px 10px; border-radius: 10px;
+  border: 1px solid transparent;
+}
+.cyb-link:hover {
+  border-color: color-mix(in srgb, var(--primary) 40%, transparent);
+  background: rgba(255,255,255,0.03);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
+}
+
+/* Hero strip */
+.cyb-hero { padding: 12px 0 22px; }
+.cyb-hero-title {
+  margin: 0; font-size: 22px; font-weight: 700;
+  letter-spacing: 0.2px;
+  color: var(--text);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.cyb-hero-sub { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+
+/* Main card */
+.cyb-main { padding: 28px 0 48px; }
+.cyb-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.0)),
+              var(--panel);
+  border: 1px solid var(--outline);
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.35),
+              inset 0 0 60px rgba(255,255,255,0.02);
+  padding: 28px 24px;
+}
+
+/* Headings, content */
+.cyb-h1, .cyb-card h1 { font-size: 30px; margin: 0 0 12px; }
+.cyb-card h2 { font-size: 22px; margin: 24px 0 10px; }
+.cyb-card h3 { font-size: 18px; margin: 18px 0 8px; }
+.cyb-card p  { margin: 10px 0; color: var(--text); }
+.cyb-card a  { color: var(--primary); text-decoration: none; }
+.cyb-card a:hover { text-decoration: underline; }
+.cyb-card blockquote {
+  margin: 16px 0; padding: 12px 14px;
+  border-left: 3px solid var(--accent);
+  background: rgba(255,255,255,0.03);
+  border-radius: 8px;
+}
+
+/* Posts */
+.cyb-post img { max-width: 100%; border-radius: 10px; }
+
+/* Footer */
+.cyb-footer {
+  border-top: 1px solid var(--outline);
+  padding: 18px 0;
+  background: linear-gradient(90deg, rgba(168,85,247,0.06), rgba(37,99,235,0.06));
+}
+.cyb-footer-inner { display:flex; align-items:center; justify-content:space-between; }
+.muted { color: var(--muted); font-size: 13px; }
+
+/* Language pills */
+.cyb-lang {
+  position: fixed; right: 16px; bottom: 16px; display: flex; gap: 8px;
+}
+.cyb-pill {
+  display: inline-block; padding: 6px 10px; border-radius: 999px;
+  color: var(--text); text-decoration: none; font-size: 12px;
+  border: 1px solid color-mix(in srgb, var(--primary) 40%, transparent);
+  background: rgba(255,255,255,0.02);
+  backdrop-filter: blur(10px);
+}
+.cyb-pill.active,
+.cyb-pill:hover {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-color: transparent;
+  box-shadow: 0 0 20px color-mix(in srgb, var(--primary) 35%, transparent);
+}
+
+/* Simple utilities */
+hr { border: none; border-top: 1px solid var(--outline); margin: 20px 0; }
+ul, ol { padding-left: 20px; }
+code, pre {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--outline);
+  border-radius: 8px;
+  padding: 2px 6px;
+}

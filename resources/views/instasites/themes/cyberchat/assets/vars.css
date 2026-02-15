@@ -1,0 +1,26 @@
+:root{
+  /* ChatGPT-adjacent dark palette */
+  --primary:#10a37f;
+  --accent:#1a7f64;
+
+  /* Surfaces (slightly distinct like ChatGPT) */
+  --bg:#0e0f13;          /* page canvas */
+  --panel:#121317;       /* cards / panels */
+  --panel-2:#0b0c10;     /* sidebar rail */
+  --panel-3:#16171c;     /* message surface */
+
+  /* Text */
+  --text:#e6e7ea;
+  --muted:#a2a8b3;
+  --link:var(--primary);
+
+  /* Lines / effects */
+  --outline:rgba(255,255,255,.08);
+  --outline-weak:rgba(255,255,255,.05);
+  --ring:rgba(16,163,127,.35);
+
+  /* Rounding + type scale (ChatGPT is not too round, not too square) */
+  --r-sm:8px; --r-md:10px; --r-lg:12px;
+
+  --fs-body:16px; --fs-h1:34px; --fs-h2:22px; --fs-h3:18px;
+}

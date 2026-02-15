@@ -142,27 +142,118 @@ class SiteBuilderService
     ];
   }
 
-  public function reset(string $hostname): bool
-  {
-    $root = rtrim(config('instasites.sites_root'), '/')."/{$hostname}";
-    if (is_dir($root)) {
-      File::deleteDirectory($root);
-      return true;
+    public function reset(string $hostname): bool
+    {
+        $root = rtrim(config('instasites.sites_root'), '/')."/{$hostname}";
+        if (is_dir($root)) {
+        File::deleteDirectory($root);
+        return true;
+        }
+        return false;
     }
-    return false;
-  }
 
     private function copyThemeAssets(string $theme, string $dest, array $cfg): array
     {
-        $src = base_path("resources/instasites/themes/{$theme}/assets");
-        if (is_dir($src)) \Illuminate\Support\Facades\File::copyDirectory($src, $dest);
+        $viewsAssets = resource_path("views/instasites/themes/{$theme}/assets");
+        $altAssets   = base_path("resources/instasites/themes/{$theme}/assets");
+
+        $viewsRoot   = resource_path("views/instasites/themes/{$theme}");
+        $rootStyle   = "{$viewsRoot}/style.css";
+        $rootCssDir  = "{$viewsRoot}/css";
+        $rootJsDir   = "{$viewsRoot}/js";
+        $rootImgDir  = "{$viewsRoot}/img";
+        $rootImages  = "{$viewsRoot}/images";
+
         \Illuminate\Support\Facades\File::ensureDirectoryExists($dest);
 
-        $vars = ":root{--primary:".($cfg['primaryColor'] ?? '#2563eb').";--accent:".($cfg['accentColor'] ?? '#a855f7').";}";
-        file_put_contents("{$dest}/vars.css", $vars);
+        $src = is_dir($viewsAssets) ? $viewsAssets : (is_dir($altAssets) ? $altAssets : null);
+        $copiedAnything = false;
 
-        return ['hasClassicCss' => is_file("{$src}/classic.css")];
+        // 1) Copy /assets if present
+        if ($src) {
+            try {
+                if (\Illuminate\Support\Facades\File::copyDirectory($src, $dest)) {
+                    $copiedAnything = true;
+                }
+            } catch (\Throwable $e) {
+                // \Log::warning('copyDirectory failed: '.$e->getMessage());
+            }
+        }
+
+        // 2) Fallbacks (theme root)
+        if (!$copiedAnything) {
+            if (is_file($rootStyle)) {
+                try { \Illuminate\Support\Facades\File::copy($rootStyle, "{$dest}/style.css"); $copiedAnything = true; } catch (\Throwable $e) {}
+            }
+            foreach ([$rootCssDir, $rootJsDir, $rootImgDir, $rootImages] as $dir) {
+                if (is_dir($dir)) {
+                    $name = basename($dir);
+                    try { \Illuminate\Support\Facades\File::copyDirectory($dir, "{$dest}/{$name}"); $copiedAnything = true; } catch (\Throwable $e) {}
+                }
+            }
+        }
+
+        // 3) Handle vars.css intelligently
+        $destVars = "{$dest}/vars.css";
+        $srcVars  = $src ? "{$src}/vars.css" : null;
+
+        $wantPrimary = $cfg['primaryColor'] ?? null;
+        $wantAccent  = $cfg['accentColor']  ?? null;
+        $force       = (bool)($cfg['forceVarsRegen'] ?? false); // optional flag
+
+        if (is_file($srcVars)) {
+            // Theme provides its own vars.css — copy it first (preserve theme defaults)
+            try { \Illuminate\Support\Facades\File::copy($srcVars, $destVars); } catch (\Throwable $e) {}
+
+            // If platform config wants to override colors, merge them in-place
+            if ($wantPrimary || $wantAccent || $force) {
+                try {
+                    $css = file_get_contents($destVars) ?: '';
+                    if ($wantPrimary) {
+                        $css = preg_replace('/(--primary\s*:\s*)([^;]+)(;)/i', '${1}'.$wantPrimary.'$3', $css, 1, $count1);
+                        if (!$count1) { $css = rtrim($css)."\n--primary: {$wantPrimary};\n"; }
+                    }
+                    if ($wantAccent) {
+                        $css = preg_replace('/(--accent\s*:\s*)([^;]+)(;)/i', '${1}'.$wantAccent.'$3', $css, 1, $count2);
+                        if (!$count2) { $css = rtrim($css)."\n--accent: {$wantAccent};\n"; }
+                    }
+                    // Ensure :root wrapper exists
+                    if (!preg_match('/:root\s*\{[\s\S]*\}/', $css)) {
+                        $css = ":root{\n--primary: ".($wantPrimary ?? '#2563eb').";\n--accent: ".($wantAccent ?? '#a855f7').";\n}\n".$css;
+                    }
+                    file_put_contents($destVars, $css);
+                } catch (\Throwable $e) {}
+            }
+        } else {
+            // No theme vars.css — generate one (use platform cfg OR campbell defaults)
+            $primary = $wantPrimary ?: ($theme === 'campbell' ? '#ffcc00' : '#2563eb');
+            $accent  = $wantAccent  ?: ($theme === 'campbell' ? '#ff6600' : '#a855f7');
+
+            $vars = <<<CSS
+                    :root{
+                    --primary: {$primary};
+                    --accent:  {$accent};
+                    /* Campbell/Default dark tokens */
+                    --bg:      #0b0b0b;
+                    --panel:   #141414;
+                    --text:    #f5f5f5;
+                    --muted:   #9e9e9e;
+                    --outline: rgba(255,255,255,0.08);
+                    --ring:    rgba(255,204,0,0.35);
+                    }
+                    CSS;
+            file_put_contents($destVars, $vars);
+        }
+
+        return [
+            'assetsCopied' => $copiedAnything,
+            'source'       => $src ?: 'fallback-views-root',
+            'hasStyleCss'  => is_file("{$dest}/style.css"),
+            'hasVarsCss'   => is_file($destVars),
+            'dest'         => $dest,
+        ];
     }
+
 
     private function renderAll(
         string $public,
@@ -217,6 +308,17 @@ class SiteBuilderService
                 // just above the PAGES render
                 $navItems = $this->buildNav($bp, ($pageByLocSlug[$loc] ?? []), ($postByLocSlug[$loc] ?? []), $loc, $default);
 
+                // hero media (first valid URL from media_links)
+                $heroMedia = null;
+                $ml = $p['media_links'] ?? [];
+                if (is_array($ml) && !empty($ml)) {
+                    $first = $ml[0] ?? null;
+                    if (is_string($first) && preg_match('~^https?://~i', $first)) {
+                        $heroMedia = $first;
+                    }
+                }
+                $recentPosts = $this->recentPostsFromMap(($postByLocSlug[$loc] ?? []), $loc, $default);
+
                 // PAGES (inside the foreach)
                 $html = view("{$viewBase}.page", [
                     'layout_view'    => $layoutView,
@@ -231,6 +333,10 @@ class SiteBuilderService
                     'metaTitle'      => $metaTitle,
                     'metaDescription'=> $metaDescription,
                     'contentHtml'    => $contentHtml,
+
+                    // NEW
+                    'heroMedia'       => $heroMedia,
+                    'recentPosts'    => $recentPosts,   // ← pass to view
                 ])->render();
 
                 file_put_contents("{$outDir}/index.html", $html);
@@ -247,6 +353,16 @@ class SiteBuilderService
                 $metaTitle       = $post['meta_title'] ?? $post['title'] ?? ($bp['site_name'] ?? 'Site');
                 $metaDescription = $post['meta_description'] ?? '';
                 $title           = $post['title'] ?? '';
+                $recentPosts = $this->recentPostsFromMap(($postByLocSlug[$loc] ?? []), $loc, $default);
+                // hero media
+                $heroMedia = null;
+                $ml = $post['media_links'] ?? [];
+                if (is_array($ml) && !empty($ml)) {
+                    $first = $ml[0] ?? null;
+                    if (is_string($first) && preg_match('~^https?://~i', $first)) {
+                        $heroMedia = $first;
+                    }
+                }
 
                 $html = view("{$viewBase}.post", [
                     'layout_view'    => $layoutView,
@@ -258,13 +374,49 @@ class SiteBuilderService
                     'canonical'      => $canonical,
 
                     // flat content vars
+
+                    'navItems'      => $navItems,
                     'title'          => $title,
                     'metaTitle'      => $metaTitle,
                     'metaDescription'=> $metaDescription,
                     'contentHtml'    => $contentHtml,
+
+                    // NEW
+                    'heroMedia'       => $heroMedia,
+                    'recentPosts'    => $recentPosts,   // ← pass to view
                 ])->render();
 
                 file_put_contents("{$outDir}/index.html", $html);
+            }
+
+            // BLOG INDEX (per locale)
+            if (!empty($postByLocSlug[$loc])) {
+                $blogDir = "{$basePath}/blog";
+                if (!is_dir($blogDir)) mkdir($blogDir, 0775, true);
+
+                $canonicalBlog = "https://{$host}".($loc===$default?'':"/{$loc}")."/blog/";
+                $navItems      = $this->buildNav($bp, ($pageByLocSlug[$loc] ?? []), ($postByLocSlug[$loc] ?? []), $loc, $default);
+                $postsList     = $this->postsListFromMap(($postByLocSlug[$loc] ?? []), $loc, $default);
+
+                $html = view("{$viewBase}.blog", [
+                    'layout_view'     => $layoutView,
+                    'blueprint'       => $bp,
+                    'locale'          => $loc,
+                    'locales'         => $locales,
+                    'defaultLocale'   => $default,
+                    'assets'          => $assets,
+                    'canonical'       => $canonicalBlog,
+
+                    'navItems'        => $navItems,
+                    'title'           => 'Blog',
+                    'metaTitle'       => 'Blog',
+                    'metaDescription' => $bp['site_name'] ? ($bp['site_name'].' blog') : 'Blog',
+                    'postsList'       => $postsList,
+                    // Optional hero image for the blog index: leave null
+                    'heroMedia'       => null,
+                ])->render();
+
+                file_put_contents("{$blogDir}/index.html", $html);
             }
         }
     }
@@ -274,14 +426,21 @@ class SiteBuilderService
   {
     $urls = [];
     foreach ($locales as $loc) {
-      $base = $loc===$default ? '' : "/{$loc}";
-      foreach ($pages as $p) if (($p['locale'] ?? $default)===$loc) {
-        $slug = $p['slug']==='home' ? '' : '/'.trim($p['slug'],'/');
-        $urls[] = "https://{$host}{$base}{$slug}/";
-      }
-      foreach ($posts as $post) if (($post['locale'] ?? $default)===$loc) {
-        $urls[] = "https://{$host}{$base}/blog/".trim($post['slug'],'/')."/";
-      }
+        $base = $loc===$default ? '' : "/{$loc}";
+        $hasLocPosts = false;
+
+        foreach ($pages as $p) if (($p['locale'] ?? $default)===$loc) {
+            $slug = $p['slug']==='home' ? '' : '/'.trim($p['slug'],'/');
+            $urls[] = "https://{$host}{$base}{$slug}/";
+        }
+        foreach ($posts as $post) if (($post['locale'] ?? $default)===$loc) {
+            $urls[] = "https://{$host}{$base}/blog/".trim($post['slug'],'/')."/";
+            $hasLocPosts = true;
+        }
+
+        if ($hasLocPosts) {
+            $urls[] = "https://{$host}{$base}/blog/"; // blog index
+        }
     }
     $xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
     foreach ($urls as $u) $xml .= "<url><loc>{$u}</loc></url>";
@@ -342,6 +501,50 @@ class SiteBuilderService
         }
 
         return $items;
+    }
+
+    private function recentPostsFromMap(array $postsForLoc, string $loc, string $default, int $limit = 5): array
+    {
+        // $postsForLoc is the map you already build: [slug => postArray]
+        $prefix = $loc === $default ? '' : "/{$loc}";
+
+        $list = [];
+        foreach ($postsForLoc as $slug => $p) {
+            $title = $p['meta_title'] ?? $p['title'] ?? null;
+            if (!$title) continue;
+
+            $href = "{$prefix}/blog/".trim($slug, '/')."/";
+            $ts   = strtotime($p['published_at'] ?? '') ?: 0;
+
+            $list[] = [
+                'title' => $title,
+                'href'  => $href,
+                'desc'  => $p['meta_description'] ?? '',
+                'ts'    => $ts,
+            ];
+        }
+
+        usort($list, fn($a,$b) => $b['ts'] <=> $a['ts']); // newest first
+        return array_slice($list, 0, $limit);
+    }
+
+    private function postsListFromMap(array $postsForLoc, string $loc, string $default): array
+    {
+        $prefix = $loc === $default ? '' : "/{$loc}";
+        $out = [];
+        foreach ($postsForLoc as $slug => $p) {
+            $title = $p['meta_title'] ?? $p['title'] ?? null;
+            if (!$title) continue;
+            $out[] = [
+                'title' => $title,
+                'href'  => "{$prefix}/blog/".trim($slug, '/')."/",
+                'desc'  => $p['meta_description'] ?? '',
+                'date'  => $p['published_at'] ?? null,
+                'ts'    => strtotime($p['published_at'] ?? '') ?: 0,
+            ];
+        }
+        usort($out, fn($a,$b) => $b['ts'] <=> $a['ts']); // newest first
+        return $out;
     }
 
 }

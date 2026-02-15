@@ -1,6 +1,6 @@
-<footer class="cyb-footer">
-  <div class="container cyb-footer-inner">
-    <div class="muted">© {{ date('Y') }} {{ $blueprint['site_name'] ?? 'Site' }}</div>
-    <div class="muted">Powered by Instasites</div>
+<footer class="gen-footer">
+  <div class="container gen-footer-inner">
+    <span class="muted">© {{ date('Y') }} {{ $blueprint['site_name'] ?? 'Site' }}</span>
+    <span class="muted">Built with InstaSites</span>
   </div>
 </footer>
