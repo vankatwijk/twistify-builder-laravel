@@ -1,20 +1,20 @@
 :root{
-  /* Craig Campbell palette */
-  --primary: #ffcc00;   /* gold/yellow (CTA + headings) */
-  --accent:  #ff6600;   /* orange (CTA gradient end / hovers) */
+  /* Light Professional Blog Palette - Inspired by sunrisemagic.co.uk */
+  --primary: #0066cc;   /* blue (CTA + headings) */
+  --accent:  #ff6b35;   /* orange (hovers) */
 
   /* Surfaces */
-  --bg:      #0b0b0b;   /* page background (near black) */
-  --panel:   #141414;   /* cards / header / footer */
+  --bg:      #ffffff;   /* page background (white) */
+  --panel:   #f8f9fa;   /* cards / header / footer (light gray) */
 
   /* Text */
-  --text:    #f5f5f5;   /* body text */
-  --muted:   #b3b3b3;   /* subtext */
-  --link:    #ffcc00;   /* link color (gold) */
+  --text:    #333333;   /* body text */
+  --muted:   #888888;   /* subtext */
+  --link:    #0066cc;   /* link color (blue) */
 
   /* Lines / effects */
-  --outline: rgba(255,255,255,0.08);
-  --ring:    rgba(255,204,0,0.35); /* glow shadow */
+  --outline: #e0e0e0;
+  --ring:    rgba(0, 102, 204, 0.15); /* blue glow shadow */
 
   /* Radii & spacing */
   --r-sm: 10px;
