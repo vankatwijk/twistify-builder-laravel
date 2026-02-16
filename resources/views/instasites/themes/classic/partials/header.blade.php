@@ -1,6 +1,14 @@
 <nav class="container d-flex align-items-center justify-content-between py-3">
+  @php
+    $logoUrl = $blueprint['theme']['logoUrl'] ?? null;
+    $logoText = $blueprint['theme']['logoText'] ?? $blueprint['site_name'] ?? 'Site';
+  @endphp
   <a href="{{ $locale === $defaultLocale ? '/' : "/$locale/" }}" class="navbar-brand text-decoration-none">
-    {{ $blueprint['theme']['logoText'] ?? $blueprint['site_name'] ?? 'Site' }}
+    @if($logoUrl)
+      <img src="{{ $logoUrl }}" alt="{{ $logoText }}" style="max-height: 40px; width: auto;">
+    @else
+      {{ $logoText }}
+    @endif
   </a>
 
   @if(!empty($navItems))

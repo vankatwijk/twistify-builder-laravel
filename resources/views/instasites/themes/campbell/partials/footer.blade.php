@@ -3,12 +3,41 @@
   $siteName = $bp['site_name'] ?? 'Site';
   $year     = date('Y');
 
-  // Social fallbacks (can be overridden by blueprint later)
-  $social = $bp['social'] ?? [
-    ['label'=>'YouTube','href'=>'#'],
-    ['label'=>'Twitter/X','href'=>'#'],
-    ['label'=>'LinkedIn','href'=>'#'],
+  // Build social links from the new format (facebook, linkedin, x, threads, instagram)
+  $socialMapping = [
+    'facebook'  => ['label' => 'Facebook', 'icon' => 'f'],
+    'linkedin'  => ['label' => 'LinkedIn', 'icon' => 'in'],
+    'x'         => ['label' => 'X', 'icon' => 'x'],
+    'threads'   => ['label' => 'Threads', 'icon' => '@'],
+    'instagram' => ['label' => 'Instagram', 'icon' => '📷'],
   ];
+
+  $social = [];
+  $themeSocial = $bp['theme']['social'] ?? [];
+  if (is_array($themeSocial) && !empty($themeSocial)) {
+    foreach ($socialMapping as $key => $info) {
+      if (!empty($themeSocial[$key])) {
+        $social[] = [
+          'label' => $info['label'],
+          'href' => $themeSocial[$key]
+        ];
+      }
+    }
+  }
+
+  // Fallback to old format if no social data
+  if (empty($social) && isset($bp['social'])) {
+    $social = is_array($bp['social']) ? $bp['social'] : [];
+  }
+
+  // Ultimate fallback
+  if (empty($social)) {
+    $social = [
+      ['label'=>'YouTube','href'=>'#'],
+      ['label'=>'Twitter/X','href'=>'#'],
+      ['label'=>'LinkedIn','href'=>'#'],
+    ];
+  }
 
   // Recent posts come from builder; gracefully handle missing var
   $recent = (isset($recentPosts) && is_iterable($recentPosts)) ? $recentPosts : [];

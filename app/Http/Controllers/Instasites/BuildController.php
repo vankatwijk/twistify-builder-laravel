@@ -72,10 +72,17 @@ class BuildController extends Controller
           'blueprint.theme'           => 'nullable|array',
           'blueprint.theme.name'      => 'nullable|string',
           'blueprint.theme.logoText'  => 'nullable|string',
+          'blueprint.theme.logoUrl'   => 'nullable|string|url',
           'blueprint.theme.primaryColor' => 'nullable|string',
           'blueprint.theme.accentColor'  => 'nullable|string',
           'blueprint.theme.font'      => 'nullable|string',
           'blueprint.theme.nav'       => 'nullable|array',
+          'blueprint.theme.social'    => 'nullable|array',
+          'blueprint.theme.social.facebook'  => 'nullable|string|url',
+          'blueprint.theme.social.linkedin'  => 'nullable|string|url',
+          'blueprint.theme.social.x'        => 'nullable|string|url',
+          'blueprint.theme.social.threads'  => 'nullable|string|url',
+          'blueprint.theme.social.instagram' => 'nullable|string|url',
           'blueprint.settings'        => 'nullable|array',
 
           // --- locales ---

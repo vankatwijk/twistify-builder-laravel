@@ -2,13 +2,18 @@
   $site    = $blueprint['site_name'] ?? 'Site';
   $ctaText = $blueprint['theme']['cta']['text'] ?? 'New Project';
   $ctaHref = $blueprint['theme']['cta']['href'] ?? '#';
+  $logoUrl = $blueprint['theme']['logoUrl'] ?? null;
 @endphp
 
 <header class="gen-header">
   <div class="container gen-nav">
     <a class="gen-logo" href="/">
-      <span class="gen-logo-dot"></span>
-      <span class="gen-logo-text">{{ $site }}</span>
+      @if($logoUrl)
+        <img src="{{ $logoUrl }}" alt="{{ $site }}" class="gen-logo-img" style="max-height: 40px; width: auto;">
+      @else
+        <span class="gen-logo-dot"></span>
+        <span class="gen-logo-text">{{ $site }}</span>
+      @endif
     </a>
 
     {{-- Desktop --}}
