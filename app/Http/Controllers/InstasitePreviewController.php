@@ -4,7 +4,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Mime\MimeTypes;
 
@@ -69,6 +68,16 @@ class InstasitePreviewController extends Controller
                         }
                     }
                     return ' srcset="' . implode(', ', $parts) . '"';
+                },
+                $html
+            );
+
+            // 3) Fix malformed language switcher links (e.g., https://domain/api/build?lang=xx -> /test/{host}/xx/)
+            $html = preg_replace_callback(
+                '/\shref=([\'"])(?:https?:\/\/[^\/]+)?\/api\/build\?lang=([a-z]{2,3})\1/i',
+                function ($m) use ($prefix) {
+                    $lang = $m[2];
+                    return ' href=' . $m[1] . $prefix . '/' . $lang . '/' . $m[1];
                 },
                 $html
             );

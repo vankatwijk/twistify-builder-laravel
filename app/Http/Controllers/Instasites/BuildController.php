@@ -20,6 +20,26 @@ class BuildController extends Controller
 
     if (!$host) return response()->json(['ok'=>false,'error'=>'hostname required'], 422);
 
+    // --- Single-locale build support ---
+    $lang = $r->query('lang');
+    if ($lang) {
+      $lang = strtolower($lang);
+      // Filter locales
+      $data['locales'] = array_values(array_filter(($data['locales'] ?? []), fn($l) => strtolower($l) === $lang));
+      // Filter pages
+      if (isset($data['pages'])) {
+        $data['pages'] = array_values(array_filter($data['pages'], fn($p) => strtolower($p['locale'] ?? '') === $lang));
+      }
+      // Filter posts
+      if (isset($data['posts'])) {
+        $data['posts'] = array_values(array_filter($data['posts'], fn($p) => strtolower($p['locale'] ?? '') === $lang));
+      }
+      // Also update default_locale if needed
+      if (!empty($data['locales'])) {
+        $data['blueprint']['default_locale'] = $data['locales'][0];
+      }
+    }
+
     // Build immediately (sync). If you prefer queues later, just dispatch a job here.
     $result = $this->builder->build($host, $data);
 

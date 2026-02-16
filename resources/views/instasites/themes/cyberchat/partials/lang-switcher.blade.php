@@ -1,12 +1,9 @@
-@php
-  $langs = ($blueprint['theme']['languages'] ?? []) ?: (($locale ?? null) && ($defaultLocale ?? null) ? [$defaultLocale, $locale] : []);
-@endphp
 
-@if(!empty($langs) && count($langs) > 1)
+@if(!empty($locales ?? []) && count($locales) > 1)
   <div class="gen-lang" role="navigation" aria-label="Language switcher">
-    @foreach($langs as $code)
+    @foreach($locales as $code)
       @php $active = ($code === ($locale ?? '')); @endphp
-      <a class="gen-pill {{ $active ? 'active' : '' }}" href="{{ url("/$code/") }}">{{ strtoupper($code) }}</a>
+      <a class="gen-pill {{ $active ? 'active' : '' }}" href="{{ $code === ($defaultLocale ?? 'en') ? '/' : "/$code/" }}">{{ strtoupper($code) }}</a>
     @endforeach
   </div>
 @endif
