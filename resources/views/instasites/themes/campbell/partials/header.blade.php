@@ -18,11 +18,19 @@
     </a>
 
     @if(!empty($navItems))
-      <nav class="gen-menu">
-        @foreach($navItems as $item)
-          <a class="gen-link" href="{{ $item['href'] }}">{{ $item['title'] }}</a>
-        @endforeach
-      </nav>
+      <details class="gen-menu-wrap">
+        <summary class="gen-menu-toggle" aria-label="Toggle navigation">
+          <span class="burger"></span>
+          <span class="burger"></span>
+          <span class="burger"></span>
+          <span class="gen-menu-label">Menu</span>
+        </summary>
+        <nav class="gen-menu">
+          @foreach($navItems as $item)
+            <a class="gen-link" href="{{ $item['href'] }}">{{ $item['title'] }}</a>
+          @endforeach
+        </nav>
+      </details>
     @endif
 
     {{-- <a class="gen-cta" href="{{ $ctaHref }}">{{ $ctaText }}</a> --}}

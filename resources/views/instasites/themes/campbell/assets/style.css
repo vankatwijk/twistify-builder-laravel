@@ -87,6 +87,12 @@ img, svg, video, canvas {
   flex-wrap: wrap;
 }
 
+.gen-menu-wrap {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
 .gen-link {
   color: var(--text);
   text-decoration: none;
@@ -114,6 +120,18 @@ img, svg, video, canvas {
   cursor: pointer;
 }
 
+.gen-menu-toggle::-webkit-details-marker { display: none; }
+
+.gen-menu-toggle .burger {
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  display: block;
+}
+
+.gen-menu-toggle .burger + .burger { margin-top: 4px; }
+
 @media (max-width: 900px) {
   .gen-menu-toggle { display: inline-flex; }
   .gen-menu {
@@ -130,7 +148,8 @@ img, svg, video, canvas {
     transform: scaleY(0);
     transition: transform .18s ease;
   }
-  .gen-header.is-open .gen-menu { transform: scaleY(1); }
+  .gen-header.is-open .gen-menu,
+  .gen-menu-wrap[open] .gen-menu { transform: scaleY(1); }
 }
 
 /* ---------------------------------- */

@@ -30,6 +30,22 @@ body{
 
 .nav-desktop{ display:flex; gap:8px; align-items:center; margin-left:auto }
 .nav-mobile{ display:none }
+.nav-mobile-toggle{
+  list-style:none; display:inline-flex; align-items:center; gap:10px;
+  border:1px solid rgba(16,163,127,.3);
+  background:linear-gradient(135deg, var(--panel-2), color-mix(in srgb, var(--panel-2) 98%, rgba(0,212,255,.05)));
+  border-radius:12px; padding:10px 12px; cursor:pointer; user-select:none;
+}
+.nav-mobile-toggle::-webkit-details-marker{ display:none }
+.nav-mobile-toggle .burger{ width:18px; height:2px; background:var(--text); border-radius:2px; display:block }
+.nav-mobile-toggle .burger + .burger{ margin-top:4px }
+.nav-mobile-panel{
+  position:absolute; right:0; top:calc(100% + 8px);
+  background:linear-gradient(180deg, var(--panel-2) 0%, color-mix(in srgb, var(--panel-2) 98%, rgba(16,163,127,.05)) 100%);
+  border:1px solid rgba(16,163,127,.2);
+  border-radius:12px; padding:10px; display:flex; flex-direction:column; gap:8px;
+  min-width:220px; box-shadow:0 16px 40px rgba(0,0,0,.35);
+}
 .gen-link{
   padding:10px 14px; border-radius:10px; text-decoration:none; color:var(--text);
   border:1px solid transparent; font-weight:600; transition:all 0.2s ease;
@@ -50,6 +66,11 @@ body{
 .gen-cta:hover{
   transform:translateY(-2px);
   box-shadow:0 8px 25px rgba(16,163,127,.5);
+}
+
+@media (max-width:900px){
+  .nav-desktop{ display:none }
+  .nav-mobile{ display:block; margin-left:auto; position:relative }
 }
 
 /* ============ Main Shell (left rail + content) ============ */

@@ -12,12 +12,27 @@
   </a>
 
   @if(!empty($navItems))
-    <ul class="nav">
+    <ul class="nav nav-desktop">
       @foreach($navItems as $item)
         <li class="nav-item">
           <a class="nav-link" href="{{ $item['href'] }}">{{ $item['title'] }}</a>
         </li>
       @endforeach
     </ul>
+    <details class="nav-mobile">
+      <summary class="nav-mobile-toggle" aria-label="Toggle navigation">
+        <span class="burger"></span>
+        <span class="burger"></span>
+        <span class="burger"></span>
+        <span class="nav-mobile-label">Menu</span>
+      </summary>
+      <ul class="nav nav-mobile-list">
+        @foreach($navItems as $item)
+          <li class="nav-item">
+            <a class="nav-link" href="{{ $item['href'] }}">{{ $item['title'] }}</a>
+          </li>
+        @endforeach
+      </ul>
+    </details>
   @endif
 </nav>

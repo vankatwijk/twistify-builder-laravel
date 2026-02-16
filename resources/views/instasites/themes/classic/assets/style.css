@@ -57,6 +57,53 @@ nav .container {
   margin: 0;
 }
 
+.nav-desktop {
+  display: flex;
+}
+
+.nav-mobile {
+  display: none;
+  position: relative;
+}
+
+.nav-mobile-toggle {
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.nav-mobile-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.nav-mobile-toggle .burger {
+  width: 18px;
+  height: 2px;
+  background: #333;
+  border-radius: 2px;
+  display: block;
+}
+
+.nav-mobile-toggle .burger + .burger {
+  margin-top: 4px;
+}
+
+.nav-mobile-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 12px 0 0;
+  padding: 12px 0 0;
+  border-top: 1px solid #e0e0e0;
+}
+
 .nav-item {
   list-style: none;
 }
@@ -424,15 +471,16 @@ footer a:hover {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .nav {
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 15px;
+  nav .container {
+    align-items: center;
   }
 
-  nav .container {
-    flex-direction: column;
-    align-items: flex-start;
+  .nav-desktop {
+    display: none;
+  }
+
+  .nav-mobile {
+    display: block;
   }
 
   h1, .post-title {
