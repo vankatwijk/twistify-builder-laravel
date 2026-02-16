@@ -73,6 +73,55 @@ nav .container {
   color: #0066cc;
 }
 
+/* Hero Section */
+.classic-hero {
+  background: #f8f9fa;
+  padding: 60px 0;
+  margin-bottom: 60px;
+}
+
+.classic-hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.classic-hero-content {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.classic-hero-content h1 {
+  margin-top: 0;
+  font-size: 48px;
+  line-height: 1.2;
+}
+
+.classic-hero-subtitle {
+  font-size: 20px;
+  line-height: 1.6;
+  color: #666;
+  margin: 20px 0 0;
+}
+
+.classic-hero-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.classic-hero-image img {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
 /* Main Content */
 main {
   padding: 60px 0;
@@ -392,6 +441,19 @@ footer a:hover {
 
   h2 {
     font-size: 26px;
+  }
+
+  .classic-hero-inner {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .classic-hero-content h1 {
+    font-size: 36px;
+  }
+
+  .classic-hero-subtitle {
+    font-size: 18px;
   }
 
   .blog-posts {

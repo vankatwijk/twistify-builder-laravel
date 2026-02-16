@@ -18,6 +18,7 @@
 </head>
 <body>
   @includeIf("instasites.themes.$themeName.partials.header")
+  @includeIf("instasites.themes.$themeName.partials.hero")
   @includeIf("instasites.themes.$themeName.partials.lang-switcher")
 
   <main class="container my-5">@yield('content')</main>

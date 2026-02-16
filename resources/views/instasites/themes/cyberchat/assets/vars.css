@@ -1,26 +1,54 @@
 :root{
-  /* ChatGPT-adjacent dark palette */
-  --primary:#10a37f;
-  --accent:#1a7f64;
+  /* Premium modern dark palette with vibrant accents */
+  --primary:#16a37f;
+  --primary-light:#00d4ff;
+  --primary-dark:#0f7a5f;
+  --accent:#00d4ff;
 
-  /* Surfaces (slightly distinct like ChatGPT) */
-  --bg:#0e0f13;          /* page canvas */
-  --panel:#121317;       /* cards / panels */
-  --panel-2:#0b0c10;     /* sidebar rail */
-  --panel-3:#16171c;     /* message surface */
+  /* Sophisticated dark surfaces with subtle depth */
+  --bg:#0c1215;          /* page canvas - deep dark */
+  --panel:#121a1f;       /* cards / panels - slightly lighter */
+  --panel-2:#171f26;     /* sidebar rail - with depth */
+  --panel-3:#1d272f;     /* message surface - elevated */
 
-  /* Text */
+  /* Text colors */
   --text:#e6e7ea;
-  --muted:#a2a8b3;
-  --link:var(--primary);
+  --text-light:#a8abb5;
+  --muted:#70727a;
+  --link:#00d4ff;
 
-  /* Lines / effects */
-  --outline:rgba(255,255,255,.08);
-  --outline-weak:rgba(255,255,255,.05);
+  /* Modern border/effect system */
+  --outline:rgba(16,163,127,.25);
+  --outline-weak:rgba(122,140,147,.12);
   --ring:rgba(16,163,127,.35);
 
-  /* Rounding + type scale (ChatGPT is not too round, not too square) */
-  --r-sm:8px; --r-md:10px; --r-lg:12px;
+  /* Refined rounding for modern feel */
+  --r-sm:8px;
+  --r-md:12px;
+  --r-lg:16px;
 
-  --fs-body:16px; --fs-h1:34px; --fs-h2:22px; --fs-h3:18px;
+  /* Modern type scale */
+  --fs-body:16px;
+  --fs-h1:2.4rem;
+  --fs-h2:1.8rem;
+  --fs-h3:1.4rem;
+
+  /* Shadow system for depth */
+  --shadow-sm:0 2px 8px rgba(0,0,0,.3);
+  --shadow-md:0 4px 16px rgba(0,0,0,.4);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.5);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast:more){
+  :root{
+    --muted:#888;
+    --outline-weak:rgba(122,140,147,.18);
+    --text:#f0f1f5;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion:reduce){
+  *{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important }
 }
