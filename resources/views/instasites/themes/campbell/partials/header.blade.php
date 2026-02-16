@@ -18,7 +18,7 @@
     </a>
 
     @if(!empty($navItems))
-      <details class="gen-menu-wrap">
+      <details class="gen-menu-wrap" open>
         <summary class="gen-menu-toggle" aria-label="Toggle navigation">
           <span class="burger"></span>
           <span class="burger"></span>
