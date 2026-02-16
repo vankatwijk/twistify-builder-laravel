@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>{{ $metaTitle ?? ($blueprint['site_name'] ?? 'Site') }}</title>
+  <link rel="icon" href="/assets/favicon.png" type="image/png">
   <meta name="description" content="{{ $metaDescription ?? '' }}">
   @isset($canonical)<link rel="canonical" href="{{ $canonical }}">@endisset
   @php $themeName = strtolower($blueprint['theme']['name'] ?? 'general'); @endphp

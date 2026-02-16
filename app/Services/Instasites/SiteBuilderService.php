@@ -116,6 +116,14 @@ class SiteBuilderService
     if ($reset && is_dir($root)) File::deleteDirectory($root);
     File::ensureDirectoryExists($public);
 
+    // Generate favicon
+    try {
+      $faviconGenerator = new FaviconGeneratorService();
+      $faviconGenerator->generate($public, $hostname);
+    } catch (\Throwable $e) {
+      // Silently fail - favicon is optional
+    }
+
     $assetFlags = $this->copyThemeAssets($theme, "{$public}/assets/{$theme}", data_get($payload, 'blueprint.theme', []));
     $this->renderAll($public, $theme, $locales, $default, $pages, $posts, $payload['blueprint'], $assetFlags);
 

@@ -6,6 +6,7 @@
   <title>{{ $metaTitle ?? ($blueprint['site_name'] ?? 'Site') }}</title>
 
   @php $themeName = strtolower($blueprint['theme']['name'] ?? 'classic'); @endphp
+  <link rel="icon" href="/assets/favicon.png" type="image/png">
   <link rel="stylesheet" href="/assets/{{ $themeName }}/style.css">
   <link rel="stylesheet" href="/assets/{{ $themeName }}/vars.css">
   @if(!empty($assets['hasClassicCss']))
