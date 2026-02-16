@@ -1,0 +1,21 @@
+:root {
+  /* Primary Colors */
+  --primary: #0066cc;
+  --accent: #ff6b35;
+  
+  /* Neutral Colors */
+  --bg: #ffffff;
+  --text: #333333;
+  --text-light: #666666;
+  --text-muted: #888888;
+  --border: #e0e0e0;
+  --panel: #f8f9fa;
+  
+  /* Interactive */
+  --link: #0066cc;
+  --link-hover: #0052a3;
+  
+  /* Spacing */
+  --container-max-width: 1200px;
+  --content-max-width: 750px;
+}
