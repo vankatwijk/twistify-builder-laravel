@@ -21,9 +21,11 @@
     </ul>
     <details class="nav-mobile">
       <summary class="nav-mobile-toggle" aria-label="Toggle navigation">
-        <span class="burger"></span>
-        <span class="burger"></span>
-        <span class="burger"></span>
+        <span class="burger-stack" aria-hidden="true">
+          <span class="burger"></span>
+          <span class="burger"></span>
+          <span class="burger"></span>
+        </span>
         <span class="nav-mobile-label">Menu</span>
       </summary>
       <ul class="nav nav-mobile-list">

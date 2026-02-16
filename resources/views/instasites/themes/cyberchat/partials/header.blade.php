@@ -27,7 +27,11 @@
     {{-- Mobile --}}
     <details class="nav-mobile">
       <summary class="nav-mobile-toggle">
-        <span class="burger"></span><span class="burger"></span><span class="burger"></span>
+        <span class="burger-stack" aria-hidden="true">
+          <span class="burger"></span>
+          <span class="burger"></span>
+          <span class="burger"></span>
+        </span>
         <span class="nav-mobile-label">Menu</span>
       </summary>
       <nav class="nav-mobile-panel" aria-label="Primary mobile">

@@ -20,9 +20,11 @@
     @if(!empty($navItems))
       <details class="gen-menu-wrap" open>
         <summary class="gen-menu-toggle" aria-label="Toggle navigation">
-          <span class="burger"></span>
-          <span class="burger"></span>
-          <span class="burger"></span>
+          <span class="burger-stack" aria-hidden="true">
+            <span class="burger"></span>
+            <span class="burger"></span>
+            <span class="burger"></span>
+          </span>
           <span class="gen-menu-label">Menu</span>
         </summary>
         <nav class="gen-menu">

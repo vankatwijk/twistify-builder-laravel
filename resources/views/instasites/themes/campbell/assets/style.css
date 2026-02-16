@@ -122,6 +122,12 @@ img, svg, video, canvas {
 
 .gen-menu-toggle::-webkit-details-marker { display: none; }
 
+.gen-menu-toggle .burger-stack {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .gen-menu-toggle .burger {
   width: 18px;
   height: 2px;
@@ -129,8 +135,6 @@ img, svg, video, canvas {
   border-radius: 2px;
   display: block;
 }
-
-.gen-menu-toggle .burger + .burger { margin-top: 4px; }
 
 @media (max-width: 900px) {
   .gen-menu-toggle { display: inline-flex; }
