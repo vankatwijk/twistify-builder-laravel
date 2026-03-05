@@ -29,6 +29,24 @@
       </nav>
     @endif
 
+    @if(!empty($navItems) || $ctaEnabled)
+      <details class="galaxy-mobile-nav">
+        <summary class="galaxy-mobile-toggle" aria-label="Open menu">
+          <span class="galaxy-burger" aria-hidden="true"></span>
+          <span class="galaxy-burger" aria-hidden="true"></span>
+          <span class="galaxy-burger" aria-hidden="true"></span>
+        </summary>
+        <nav class="galaxy-mobile-panel" aria-label="Mobile navigation">
+          @foreach(($navItems ?? []) as $item)
+            <a class="galaxy-link" href="{{ $item['href'] }}">{{ $item['title'] }}</a>
+          @endforeach
+          @if($ctaEnabled)
+            <a class="galaxy-cta" href="{{ $ctaHref }}" target="{{ $ctaTarget }}" @if($ctaRel) rel="{{ $ctaRel }}" @endif>{{ $ctaText }}</a>
+          @endif
+        </nav>
+      </details>
+    @endif
+
     @if($ctaEnabled)
       <a class="galaxy-cta" href="{{ $ctaHref }}" target="{{ $ctaTarget }}" @if($ctaRel) rel="{{ $ctaRel }}" @endif>{{ $ctaText }}</a>
     @endif

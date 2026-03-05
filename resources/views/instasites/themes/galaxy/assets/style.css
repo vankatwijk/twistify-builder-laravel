@@ -25,6 +25,39 @@ body.galaxy-body{
 .galaxy-link:hover{border-color:color-mix(in srgb, var(--primary) 40%, transparent);background:rgba(255,255,255,.03)}
 .galaxy-cta{padding:10px 16px;border-radius:999px;text-decoration:none;font-weight:800;background:linear-gradient(90deg,var(--primary),var(--accent));color:#041016}
 
+.galaxy-mobile-nav{display:none;position:relative}
+.galaxy-mobile-toggle{
+  list-style:none;
+  width:44px;
+  height:44px;
+  display:inline-flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:4px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:rgba(255,255,255,.03);
+  cursor:pointer;
+}
+.galaxy-mobile-toggle::-webkit-details-marker{display:none}
+.galaxy-burger{display:block;width:18px;height:2px;background:var(--text);border-radius:2px}
+.galaxy-mobile-panel{
+  position:absolute;
+  right:0;
+  top:calc(100% + 8px);
+  min-width:220px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:color-mix(in srgb, var(--bg-2) 94%, transparent);
+  box-shadow:0 14px 30px rgba(0,0,0,.35);
+  z-index:90;
+}
+
 .galaxy-hero{border-bottom:1px solid var(--line)}
 .galaxy-hero-inner{display:grid;grid-template-columns:1fr;gap:24px;align-items:center;padding:34px 0}
 .galaxy-kicker{margin:0 0 10px;color:color-mix(in srgb, var(--primary) 75%, white);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
@@ -107,6 +140,8 @@ body.galaxy-body{
 
 @media (max-width:920px){
   .galaxy-menu{display:none}
+  .galaxy-nav > .galaxy-cta{display:none}
+  .galaxy-mobile-nav{display:block}
   .galaxy-hero-banner-wrap{padding:0 10px}
   .galaxy-hero-overlay{align-items:flex-end;padding-bottom:20px}
   .galaxy-hero-copy{max-width:100%}
