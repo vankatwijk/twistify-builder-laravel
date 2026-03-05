@@ -7,28 +7,46 @@
 @endphp
 
 <section class="galaxy-hero">
-  <div class="container galaxy-hero-inner">
-    <div class="galaxy-hero-copy">
-      <p class="galaxy-kicker">Odds · Tips · Insights</p>
-      <h1>{{ $headline }}</h1>
-      @if(!empty($subheadline))
-        <p class="galaxy-sub">{{ $subheadline }}</p>
-      @endif
-      <div class="galaxy-actions">
-        @if(!empty($hero['ctaText']))
-          <a class="galaxy-btn primary" href="{{ $hero['ctaHref'] ?? '#' }}">{{ $hero['ctaText'] }}</a>
-        @endif
-        @if(!empty($hero['secondaryCtaText']))
-          <a class="galaxy-btn secondary" href="{{ $hero['secondaryCtaHref'] ?? '#' }}">{{ $hero['secondaryCtaText'] }}</a>
-        @endif
+  @if(!empty($heroImage))
+    <div class="galaxy-hero-banner-wrap">
+      <div class="galaxy-hero-banner" style="--hero-overlay: {{ $overlay }};">
+        <img src="{{ $heroImage }}" alt="{{ $blueprint['site_name'] ?? 'Hero' }}" loading="lazy">
+        <div class="galaxy-hero-overlay container">
+          <div class="galaxy-hero-copy">
+            <p class="galaxy-kicker">Odds · Tips · Insights</p>
+            <h1>{{ $headline }}</h1>
+            @if(!empty($subheadline))
+              <p class="galaxy-sub">{{ $subheadline }}</p>
+            @endif
+            <div class="galaxy-actions">
+              @if(!empty($hero['ctaText']))
+                <a class="galaxy-btn primary" href="{{ $hero['ctaHref'] ?? '#' }}">{{ $hero['ctaText'] }}</a>
+              @endif
+              @if(!empty($hero['secondaryCtaText']))
+                <a class="galaxy-btn secondary" href="{{ $hero['secondaryCtaHref'] ?? '#' }}">{{ $hero['secondaryCtaText'] }}</a>
+              @endif
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-
-  </div>
-
-  @if(!empty($heroImage))
-    <div class="galaxy-hero-banner" style="--hero-overlay: {{ $overlay }};">
-      <img src="{{ $heroImage }}" alt="{{ $blueprint['site_name'] ?? 'Hero' }}" loading="lazy">
+  @else
+    <div class="container galaxy-hero-inner">
+      <div class="galaxy-hero-copy">
+        <p class="galaxy-kicker">Odds · Tips · Insights</p>
+        <h1>{{ $headline }}</h1>
+        @if(!empty($subheadline))
+          <p class="galaxy-sub">{{ $subheadline }}</p>
+        @endif
+        <div class="galaxy-actions">
+          @if(!empty($hero['ctaText']))
+            <a class="galaxy-btn primary" href="{{ $hero['ctaHref'] ?? '#' }}">{{ $hero['ctaText'] }}</a>
+          @endif
+          @if(!empty($hero['secondaryCtaText']))
+            <a class="galaxy-btn secondary" href="{{ $hero['secondaryCtaHref'] ?? '#' }}">{{ $hero['secondaryCtaText'] }}</a>
+          @endif
+        </div>
+      </div>
     </div>
   @endif
 </section>
