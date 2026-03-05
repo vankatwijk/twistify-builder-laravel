@@ -148,9 +148,47 @@ nav .container {
 
 .classic-hero-inner {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 40px;
   align-items: center;
+}
+
+.classic-hero-banner-wrap {
+  width: 100%;
+  padding: 0 16px;
+}
+
+.classic-hero-banner {
+  position: relative;
+  width: 100%;
+  max-width: 2000px;
+  margin: 0 auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.classic-hero-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.45));
+}
+
+.classic-hero-banner img {
+  width: 100%;
+  height: clamp(320px, 40vw, 620px);
+  object-fit: cover;
+  object-position: center center;
+}
+
+.classic-hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: clamp(18px, 3.5vw, 52px);
 }
 
 .classic-hero-content {
@@ -173,6 +211,17 @@ nav .container {
   margin: 20px 0 0;
 }
 
+.classic-hero-overlay .classic-hero-content {
+  min-height: 0;
+  max-width: min(860px, 100%);
+}
+
+.classic-hero-overlay .classic-hero-content h1,
+.classic-hero-overlay .classic-hero-subtitle {
+  color: #fff;
+  text-shadow: 0 2px 18px rgba(0,0,0,.4);
+}
+
 .classic-hero-actions {
   display: flex;
   gap: 12px;
@@ -191,9 +240,9 @@ nav .container {
 }
 
 .classic-hero-btn.ghost {
-  background: transparent;
-  border: 1px solid #0066cc;
-  color: #0066cc;
+  background: rgba(0,0,0,.2);
+  border: 1px solid rgba(255,255,255,.8);
+  color: #fff;
 }
 
 .classic-trust {
@@ -237,19 +286,9 @@ nav .container {
   opacity: 0.8;
 }
 
-.classic-hero-image {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.classic-hero-image img {
-  width: 100%;
-  height: auto;
-  max-height: 500px;
-  object-fit: cover;
-  border-radius: 8px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+@media (max-width: 900px) {
+  .classic-hero-banner-wrap { padding: 0 10px; }
+  .classic-hero-overlay { padding-bottom: 20px; }
 }
 
 /* Main Content */

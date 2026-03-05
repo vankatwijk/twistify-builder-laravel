@@ -1,5 +1,4 @@
 @php
-  // Accept from controller or blueprint; fallback to navItems
   $chatItems = $chatItems
     ?? ($blueprint['theme']['chat_items'] ?? null)
     ?? array_map(fn($it) => [
@@ -11,55 +10,56 @@
   $newHref = $navCta['href'] ?? '#';
 @endphp
 
-<aside class="gen-side" aria-label="Sidebar">
-  {{-- Mobile drawer --}}
-  <details class="side-mobile">
-    <summary class="side-toggle">
-      <span class="burger"></span><span class="burger"></span><span class="burger"></span>
-      <span>Menu</span>
+<aside class="cyb-side" aria-label="Conversation history">
+  <details class="cyb-side-mobile">
+    <summary class="cyb-side-toggle" aria-label="Open navigation">
+      <span class="cyb-burger"></span><span class="cyb-burger"></span><span class="cyb-burger"></span>
+      <span>Pages</span>
     </summary>
-    <div class="side-panel">
-      <div class="side-top">
-        <a href="{{ $newHref }}" class="side-new">{{ $newText }}</a>
+
+    <div class="cyb-side-panel">
+      <div class="cyb-side-head">
+        <a href="{{ $newHref }}" class="cyb-new-chat">{{ $newText }}</a>
       </div>
-      <nav class="chat-list" aria-label="Pages & Posts">
+
+      <nav class="cyb-history" aria-label="Pages and posts">
         @forelse($chatItems as $it)
-          <a class="chat-item" href="{{ $it['href'] }}">
-            <span class="chat-dot"></span>
-            <span class="chat-title">{{ $it['title'] }}</span>
-            @if(!empty($it['meta']))<span class="chat-meta">{{ $it['meta'] }}</span>@endif
+          <a class="cyb-history-item" href="{{ $it['href'] }}" title="{{ $it['title'] }}">
+            <span class="cyb-history-title">{{ $it['title'] }}</span>
+            @if(!empty($it['meta']))<span class="cyb-history-meta">{{ $it['meta'] }}</span>@endif
           </a>
         @empty
-          <span class="chat-empty muted">No items yet</span>
+          <span class="cyb-history-empty">No pages yet</span>
         @endforelse
       </nav>
-      <div class="side-bottom">
+
+      <div class="cyb-side-links">
         @foreach(($blueprint['theme']['sidebar_links'] ?? []) as $l)
-          <a class="side-link" href="{{ $l['href'] ?? '#' }}">{{ $l['title'] ?? 'Link' }}</a>
+          <a class="cyb-side-link" href="{{ $l['href'] ?? '#' }}">{{ $l['title'] ?? 'Link' }}</a>
         @endforeach
       </div>
     </div>
   </details>
 
-  {{-- Desktop rail --}}
-  <div class="side-desktop">
-    <div class="side-top">
-      <a href="{{ $newHref }}" class="side-new">{{ $newText }}</a>
+  <div class="cyb-side-desktop">
+    <div class="cyb-side-head">
+      <a href="{{ $newHref }}" class="cyb-new-chat">{{ $newText }}</a>
     </div>
-    <nav class="chat-list" aria-label="Pages & Posts">
+
+    <nav class="cyb-history" aria-label="Pages and posts">
       @forelse($chatItems as $it)
-        <a class="chat-item" href="{{ $it['href'] }}">
-          <span class="chat-dot"></span>
-          <span class="chat-title">{{ $it['title'] }}</span>
-          @if(!empty($it['meta']))<span class="chat-meta">{{ $it['meta'] }}</span>@endif
+        <a class="cyb-history-item" href="{{ $it['href'] }}" title="{{ $it['title'] }}">
+          <span class="cyb-history-title">{{ $it['title'] }}</span>
+          @if(!empty($it['meta']))<span class="cyb-history-meta">{{ $it['meta'] }}</span>@endif
         </a>
       @empty
-        <span class="chat-empty muted">No items yet</span>
+        <span class="cyb-history-empty">No pages yet</span>
       @endforelse
     </nav>
-    <div class="side-bottom">
+
+    <div class="cyb-side-links">
       @foreach(($blueprint['theme']['sidebar_links'] ?? []) as $l)
-        <a class="side-link" href="{{ $l['href'] ?? '#' }}">{{ $l['title'] ?? 'Link' }}</a>
+        <a class="cyb-side-link" href="{{ $l['href'] ?? '#' }}">{{ $l['title'] ?? 'Link' }}</a>
       @endforeach
     </div>
   </div>

@@ -11,30 +11,53 @@
 
 @if(!empty($headline) || !empty($heroImage))
   <section class="classic-hero">
-    <div class="container classic-hero-inner">
-      <div class="classic-hero-content">
-        @if(!empty($headline))
-          <h1>{{ $headline }}</h1>
-        @endif
-        @if(!empty($subheadline))
-          <p class="classic-hero-subtitle">{{ $subheadline }}</p>
-        @endif
-        @if(!empty($primaryText) || !empty($secondaryText))
-          <div class="classic-hero-actions">
-            @if(!empty($primaryText))
-              <a class="classic-hero-btn" href="{{ $primaryHref }}">{{ $primaryText }}</a>
-            @endif
-            @if(!empty($secondaryText))
-              <a class="classic-hero-btn ghost" href="{{ $secondaryHref }}">{{ $secondaryText }}</a>
-            @endif
-          </div>
-        @endif
-      </div>
-      @if(!empty($heroImage))
-        <div class="classic-hero-image">
+    @if(!empty($heroImage))
+      <div class="classic-hero-banner-wrap">
+        <div class="classic-hero-banner">
           <img src="{{ $heroImage }}" alt="{{ $blueprint['site_name'] ?? 'Hero' }}" onerror="this.style.display='none'">
+          <div class="classic-hero-overlay container">
+            <div class="classic-hero-content">
+              @if(!empty($headline))
+                <h1>{{ $headline }}</h1>
+              @endif
+              @if(!empty($subheadline))
+                <p class="classic-hero-subtitle">{{ $subheadline }}</p>
+              @endif
+              @if(!empty($primaryText) || !empty($secondaryText))
+                <div class="classic-hero-actions">
+                  @if(!empty($primaryText))
+                    <a class="classic-hero-btn" href="{{ $primaryHref }}">{{ $primaryText }}</a>
+                  @endif
+                  @if(!empty($secondaryText))
+                    <a class="classic-hero-btn ghost" href="{{ $secondaryHref }}">{{ $secondaryText }}</a>
+                  @endif
+                </div>
+              @endif
+            </div>
+          </div>
         </div>
-      @endif
-    </div>
+      </div>
+    @else
+      <div class="container classic-hero-inner">
+        <div class="classic-hero-content">
+          @if(!empty($headline))
+            <h1>{{ $headline }}</h1>
+          @endif
+          @if(!empty($subheadline))
+            <p class="classic-hero-subtitle">{{ $subheadline }}</p>
+          @endif
+          @if(!empty($primaryText) || !empty($secondaryText))
+            <div class="classic-hero-actions">
+              @if(!empty($primaryText))
+                <a class="classic-hero-btn" href="{{ $primaryHref }}">{{ $primaryText }}</a>
+              @endif
+              @if(!empty($secondaryText))
+                <a class="classic-hero-btn ghost" href="{{ $secondaryHref }}">{{ $secondaryText }}</a>
+              @endif
+            </div>
+          @endif
+        </div>
+      </div>
+    @endif
   </section>
 @endif

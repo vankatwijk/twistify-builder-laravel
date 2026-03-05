@@ -5,14 +5,14 @@
 @endphp
 
 @if($enabled)
-<section class="gen-trust" aria-label="Trust indicators">
-  <div class="gen-trust-inner">
-    <div class="gen-trust-copy">
+<section class="cyb-trust" aria-label="Trust indicators">
+  <div class="cyb-trust-inner">
+    <div class="cyb-trust-copy">
       @if(!empty($trust['ratingText']))<span>{{ $trust['ratingText'] }}</span>@endif
       @if(!empty($trust['statsText']))<span>{{ $trust['statsText'] }}</span>@endif
     </div>
     @if(!empty($logos))
-      <div class="gen-trust-logos">
+      <div class="cyb-trust-logos">
         @foreach($logos as $logo)
           <img src="{{ $logo }}" alt="Trust logo" loading="lazy">
         @endforeach

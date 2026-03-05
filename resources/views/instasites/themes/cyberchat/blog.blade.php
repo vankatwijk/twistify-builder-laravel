@@ -1,18 +1,24 @@
 @extends($layout_view)
 
 @section('content')
-  <h1 class="gen-h1">{{ $title ?? 'Blog' }}</h1>
-  @if(!empty($postsList))
-    <section class="container gen-features" style="margin-top:12px">
-      @foreach($postsList as $p)
-        <a class="gen-feature" href="{{ $p['href'] ?? '#' }}">
-          <h3 class="m-0">{{ $p['title'] ?? 'Post' }}</h3>
-          @if(!empty($p['desc']))<p class="m-0 muted">{{ $p['desc'] }}</p>@endif
-          @if(!empty($p['date']))<p class="m-0 muted" style="font-size:12px">{{ \Illuminate\Support\Carbon::parse($p['date'])->toFormattedDateString() }}</p>@endif
-        </a>
-      @endforeach
-    </section>
-  @else
-    <p class="muted">No posts yet.</p>
-  @endif
+  <section class="cyb-msg assistant">
+    <div class="cyb-avatar">AI</div>
+    <div class="cyb-msg-body">
+      <h1 class="cyb-msg-title">{{ $title ?? 'Blog' }}</h1>
+
+      @if(!empty($postsList))
+        <div class="cyb-blog-list">
+          @foreach($postsList as $p)
+            <a class="cyb-blog-item" href="{{ $p['href'] ?? '#' }}">
+              <h3>{{ $p['title'] ?? 'Post' }}</h3>
+              @if(!empty($p['desc']))<p>{{ $p['desc'] }}</p>@endif
+              @if(!empty($p['date']))<span>{{ \Illuminate\Support\Carbon::parse($p['date'])->toFormattedDateString() }}</span>@endif
+            </a>
+          @endforeach
+        </div>
+      @else
+        <p class="cyb-muted">No posts yet.</p>
+      @endif
+    </div>
+  </section>
 @endsection

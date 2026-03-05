@@ -26,25 +26,25 @@
   }
 @endphp
 
-<footer class="gen-footer">
-  <div class="container gen-footer-inner">
-    <span class="muted">© {{ $year }} {{ $siteName }}</span>
+<footer class="cyb-footer">
+  <div class="cyb-footer-inner">
+    <span class="cyb-muted">© {{ $year }} {{ $siteName }}</span>
     @php $compliance = $bp['theme']['footer']['compliance'] ?? []; @endphp
     @if(!empty($compliance['show18Plus']) || !empty($compliance['disclaimerText']))
-      <span class="muted">
+      <span class="cyb-muted">
         @if(!empty($compliance['show18Plus']))18+ · @endif
         {{ $compliance['disclaimerText'] ?? 'Play responsibly.' }}
         @if(!empty($compliance['responsibleLink']))
-          <a class="gen-link" href="{{ $compliance['responsibleLink'] }}" target="_blank" rel="noopener">Help</a>
+          <a class="cyb-link" href="{{ $compliance['responsibleLink'] }}" target="_blank" rel="noopener">Help</a>
         @endif
       </span>
     @else
-      <span class="muted">Built with InstaSites</span>
+      <span class="cyb-muted">Built with InstaSites</span>
     @endif
     @if(!empty($social))
-      <div class="gen-menu" style="gap: 16px;">
+      <div class="cyb-footer-social">
         @foreach($social as $s)
-          <a class="gen-link" href="{{ $s['href'] }}" target="_blank" rel="noopener">{{ $s['label'] }}</a>
+          <a class="cyb-link" href="{{ $s['href'] }}" target="_blank" rel="noopener">{{ $s['label'] }}</a>
         @endforeach
       </div>
     @endif
