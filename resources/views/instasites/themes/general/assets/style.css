@@ -143,9 +143,11 @@ body.gen-body{
 /* Popup */
 .gen-popup{
   position:fixed;
-  right:16px;
-  bottom:16px;
-  width:min(360px, calc(100vw - 24px));
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  width:60vw;
+  height:60vh;
   z-index:1200;
   border:1px solid var(--outline);
   border-radius:12px;
@@ -159,7 +161,7 @@ body.gen-body{
   background:rgba(0,0,0,.5);color:#fff;cursor:pointer;
 }
 .gen-popup-media{position:relative}
-.gen-popup-media img{width:100%;height:200px;object-fit:cover;display:block}
+.gen-popup-media img{width:100%;height:100%;object-fit:cover;display:block}
 .gen-popup-overlay{
   position:absolute;inset:0;
   display:flex;flex-direction:column;justify-content:flex-end;gap:10px;
@@ -173,5 +175,5 @@ body.gen-body{
   text-decoration:none;font-weight:700;
   background:linear-gradient(90deg,var(--primary),var(--accent));color:#0a0d14;
 }
-.gen-popup-card{padding:14px}
+.gen-popup-card{height:100%;padding:14px;display:flex;flex-direction:column;justify-content:flex-end}
 .gen-popup-card p{margin:0 0 10px;color:var(--text);font-size:15px}

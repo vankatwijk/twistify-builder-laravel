@@ -238,9 +238,11 @@ a{color:inherit}
 /* Popup */
 .cyb-popup{
   position:fixed;
-  right:16px;
-  bottom:16px;
-  width:min(360px, calc(100vw - 24px));
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  width:60vw;
+  height:60vh;
   z-index:1300;
   border:1px solid var(--outline-weak);
   border-radius:12px;
@@ -254,7 +256,7 @@ a{color:inherit}
   background:rgba(0,0,0,.55);color:#fff;cursor:pointer;
 }
 .cyb-popup-media{position:relative}
-.cyb-popup-media img{width:100%;height:200px;object-fit:cover;display:block}
+.cyb-popup-media img{width:100%;height:100%;object-fit:cover;display:block}
 .cyb-popup-overlay{
   position:absolute;inset:0;
   display:flex;flex-direction:column;justify-content:flex-end;gap:10px;
@@ -268,5 +270,5 @@ a{color:inherit}
   text-decoration:none;font-weight:700;
   background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#0b1114;
 }
-.cyb-popup-card{padding:14px}
+.cyb-popup-card{height:100%;padding:14px;display:flex;flex-direction:column;justify-content:flex-end}
 .cyb-popup-card p{margin:0 0 10px;color:var(--text);font-size:15px}
