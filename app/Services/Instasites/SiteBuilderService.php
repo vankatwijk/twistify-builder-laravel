@@ -629,6 +629,15 @@ class SiteBuilderService
             'overlayOpacity'    => $this->normalizeOpacity($mergedHero['overlayOpacity'] ?? null),
         ];
 
+        $popup = is_array($theme['popup'] ?? null) ? $theme['popup'] : [];
+        $theme['popup'] = [
+            'enabled'  => $this->toBool($popup['enabled'] ?? false),
+            'imageUrl' => $popup['imageUrl'] ?? null,
+            'text'     => $popup['text'] ?? null,
+            'ctaText'  => $popup['ctaText'] ?? null,
+            'ctaUrl'   => $popup['ctaUrl'] ?? null,
+        ];
+
         $trust = is_array($theme['trust'] ?? null) ? $theme['trust'] : [];
         $logos = is_array($trust['logos'] ?? null) ? $trust['logos'] : [];
         $theme['trust'] = [

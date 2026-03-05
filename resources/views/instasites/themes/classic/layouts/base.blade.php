@@ -24,5 +24,6 @@
 
   <main class="container my-5">@yield('content')</main>
   @includeIf("instasites.themes.$themeName.partials.footer")
+  @includeIf("instasites.themes.$themeName.partials.popup")
 </body>
 </html>

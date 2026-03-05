@@ -28,6 +28,7 @@
   </main>
 
   @includeIf("instasites.themes.$themeName.partials.footer")
+  @includeIf("instasites.themes.$themeName.partials.popup")
   @includeIf("instasites.themes.$themeName.partials.lang-switcher")
 </body>
 </html>
