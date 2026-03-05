@@ -2,8 +2,8 @@
 
 @section('content')
   <article class="galaxy-post">
-    @if(!empty($title))
-      <h1>{{ $title }}</h1>
+    @if(!empty($metaTitle))
+      <h1>{{ $metaTitle }}</h1>
     @endif
 
     @if(!empty($post['published_at']))
