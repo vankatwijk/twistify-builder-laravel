@@ -24,10 +24,11 @@
       </div>
     </div>
 
-    @if(!empty($heroImage))
-      <div class="galaxy-hero-media" style="--hero-overlay: {{ $overlay }};">
-        <img src="{{ $heroImage }}" alt="{{ $blueprint['site_name'] ?? 'Hero' }}" loading="lazy">
-      </div>
-    @endif
   </div>
+
+  @if(!empty($heroImage))
+    <div class="galaxy-hero-banner" style="--hero-overlay: {{ $overlay }};">
+      <img src="{{ $heroImage }}" alt="{{ $blueprint['site_name'] ?? 'Hero' }}" loading="lazy">
+    </div>
+  @endif
 </section>
