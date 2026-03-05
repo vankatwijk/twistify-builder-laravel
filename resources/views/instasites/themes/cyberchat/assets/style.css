@@ -80,6 +80,26 @@ body{
   gap:20px; align-items:start; padding:20px 0 40px;
 }
 
+/* ============ Trust Foldover ============ */
+.gen-trust{
+  width:min(1200px, 94vw);
+  margin:0 auto 16px;
+  border:1px solid rgba(16,163,127,.2);
+  border-radius:12px;
+  background:linear-gradient(135deg, rgba(16,163,127,.08), rgba(0,212,255,.05));
+}
+.gen-trust-inner{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  padding:10px 14px;
+  flex-wrap:wrap;
+}
+.gen-trust-copy{display:flex;gap:12px;flex-wrap:wrap;color:var(--text-light);font-size:13px}
+.gen-trust-logos{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.gen-trust-logos img{height:20px;width:auto;opacity:.9}
+
 /* ============ Sidebar (enhanced) ============ */
 .gen-side{}
 .side-desktop{

@@ -16,6 +16,7 @@
 
   {{-- Promo / Hero (reads optional config) --}}
   @includeIf("instasites.themes.$themeName.partials.hero")
+  @includeIf("instasites.themes.$themeName.partials.trust")
 
   <main class="gen-main container">
     <div class="gen-card">

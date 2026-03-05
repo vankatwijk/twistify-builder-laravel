@@ -6,8 +6,9 @@
       'title'=>$it['title'] ?? 'Page', 'href'=>$it['href'] ?? '#', 'meta'=>null
     ], ($navItems ?? []));
 
-  $newText = $blueprint['theme']['cta']['text'] ?? 'New';
-  $newHref = $blueprint['theme']['cta']['href'] ?? '#';
+  $navCta = $blueprint['theme']['nav']['cta'] ?? [];
+  $newText = $navCta['text'] ?? 'New';
+  $newHref = $navCta['href'] ?? '#';
 @endphp
 
 <aside class="gen-side" aria-label="Sidebar">

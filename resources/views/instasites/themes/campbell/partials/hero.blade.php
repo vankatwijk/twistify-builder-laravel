@@ -1,29 +1,40 @@
 @php
   $bp       = $blueprint ?? [];
   $siteName = $bp['site_name'] ?? 'Site';
-  // Make a Craig-style, punchy default. Can be overridden later via blueprint['hero'].
-  $hero = $bp['hero'] ?? [];
-  $title    = $hero['title']    ?? "SEO Training, Services & Real Results";
-  $subtitle = $hero['subtitle'] ?? "Actionable strategies, audits, and hands-on consulting.";
-  $primary  = $hero['primary']  ?? ['label'=>'Work With Me', 'href'=>'/services'];
-  $secondary= $hero['secondary']?? ['label'=>'Read the Blog', 'href'=>'/blog'];
-  $badges   = $hero['badges']   ?? ['15+ Years Experience','No-fluff Strategies','Case Studies & SOPs'];
+  $hero = $bp['theme']['hero'] ?? [];
+  $title = $hero['headline'] ?? ($metaTitle ?? $siteName);
+  $subtitle = $hero['subheadline'] ?? ($metaDescription ?? null);
+  $primaryText = $hero['ctaText'] ?? null;
+  $primaryHref = $hero['ctaHref'] ?? '#';
+  $secondaryText = $hero['secondaryCtaText'] ?? null;
+  $secondaryHref = $hero['secondaryCtaHref'] ?? '#';
+  $heroImage = $hero['imageUrl'] ?? ($heroMedia ?? null);
 @endphp
 
 <section class="gen-hero">
   <div class="container gen-hero-inner">
     <div class="gen-hero-copy">
       <h1 class="gen-hero-title">
-        {{ $metaTitle ?? ($title ?? ($blueprint['site_name'] ?? '')) }}
+        {{ $title }}
       </h1>
-      @if(!empty($metaDescription))
-        <p class="gen-hero-sub">{{ $metaDescription }}</p>
+      @if(!empty($subtitle))
+        <p class="gen-hero-sub">{{ $subtitle }}</p>
+      @endif
+      @if(!empty($primaryText) || !empty($secondaryText))
+        <div class="gen-cta-row">
+          @if(!empty($primaryText))
+            <a class="gen-hero-cta" href="{{ $primaryHref }}">{{ $primaryText }}</a>
+          @endif
+          @if(!empty($secondaryText))
+            <a class="gen-hero-cta ghost" href="{{ $secondaryHref }}">{{ $secondaryText }}</a>
+          @endif
+        </div>
       @endif
     </div>
 
     <div class="gen-hero-art">
-      @if(!empty($heroMedia))
-        <img src="{{ $heroMedia }}" alt="{{ $blueprint['site_name'] ?? 'Hero' }}" onerror="this.style.display='none'">
+      @if(!empty($heroImage))
+        <img src="{{ $heroImage }}" alt="{{ $blueprint['site_name'] ?? 'Hero' }}" onerror="this.style.display='none'">
       @elseif(!empty($assets['assetsCopied'])) 
         {{-- Fallback (optional) --}}
         <img src="/assets/campbell/placeholder-headshot.jpg" alt="Placeholder" onerror="this.style.display='none'">

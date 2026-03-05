@@ -1,11 +1,12 @@
 @php
-  $ctaText = $blueprint['theme']['cta']['text'] ?? 'New Project';
-  $ctaHref = $blueprint['theme']['cta']['href'] ?? '#';
+  $navCta = $blueprint['theme']['nav']['cta'] ?? [];
+  $ctaText = $navCta['text'] ?? 'New Project';
+  $ctaHref = $navCta['href'] ?? '#';
 
-  $title = $blueprint['theme']['hero']['title'] ?? 'Chat-style, clean, and fast.';
-  $sub   = $blueprint['theme']['hero']['subtitle'] ?? 'A minimal, dark UI with emerald accents—optimized for readability and speed.';
-  $cta1  = $blueprint['theme']['hero']['cta_primary'] ?? ['text' => $ctaText, 'href' => $ctaHref];
-  $cta2  = $blueprint['theme']['hero']['cta_secondary'] ?? ['text' => 'Docs', 'href' => '#features'];
+  $title = $blueprint['theme']['hero']['headline'] ?? 'Chat-style, clean, and fast.';
+  $sub   = $blueprint['theme']['hero']['subheadline'] ?? 'A minimal, dark UI with emerald accents—optimized for readability and speed.';
+  $cta1  = ['text' => ($blueprint['theme']['hero']['ctaText'] ?? $ctaText), 'href' => ($blueprint['theme']['hero']['ctaHref'] ?? $ctaHref)];
+  $cta2  = ['text' => ($blueprint['theme']['hero']['secondaryCtaText'] ?? 'Docs'), 'href' => ($blueprint['theme']['hero']['secondaryCtaHref'] ?? '#features')];
 @endphp
 
 <section class="gen-hero">

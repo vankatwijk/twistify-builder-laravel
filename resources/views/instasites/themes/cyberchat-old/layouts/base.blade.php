@@ -19,6 +19,7 @@
 <body class="cyb-body">
   <div class="cyb-grid">
     @includeIf("instasites.themes.$themeName.partials.header", ['navItems' => $navItems ?? []])
+    @includeIf("instasites.themes.$themeName.partials.trust")
 
     <main class="cyb-main container">
       <div class="cyb-card">

@@ -1,7 +1,11 @@
 @php
   $homeHref = $locale === $defaultLocale ? '/' : "/$locale/";
-  $ctaText  = $blueprint['theme']['cta']['text'] ?? 'Sign Up';
-  $ctaHref  = $blueprint['theme']['cta']['href'] ?? '#';
+  $navCta = $blueprint['theme']['nav']['cta'] ?? [];
+  $ctaEnabled = !empty($navCta['enabled']);
+  $ctaText = $navCta['text'] ?? 'Sign Up';
+  $ctaHref = $navCta['href'] ?? '#';
+  $ctaTarget = !empty($navCta['newTab']) ? '_blank' : '_self';
+  $ctaRel = !empty($navCta['newTab']) ? 'noopener noreferrer' : null;
 @endphp
 
 <header class="gen-header">
@@ -19,6 +23,8 @@
       </nav>
     @endif
 
-    <a class="gen-cta" href="{{ $ctaHref }}">{{ $ctaText }}</a>
+    @if($ctaEnabled)
+      <a class="gen-cta" href="{{ $ctaHref }}" target="{{ $ctaTarget }}" @if($ctaRel) rel="{{ $ctaRel }}" @endif>{{ $ctaText }}</a>
+    @endif
   </div>
 </header>

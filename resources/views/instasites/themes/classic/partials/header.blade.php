@@ -2,6 +2,12 @@
   @php
     $logoUrl = $blueprint['theme']['logoUrl'] ?? null;
     $logoText = $blueprint['theme']['logoText'] ?? $blueprint['site_name'] ?? 'Site';
+    $navCta = $blueprint['theme']['nav']['cta'] ?? [];
+    $ctaEnabled = !empty($navCta['enabled']);
+    $ctaText = $navCta['text'] ?? 'Get Started';
+    $ctaHref = $navCta['href'] ?? '#';
+    $ctaTarget = !empty($navCta['newTab']) ? '_blank' : '_self';
+    $ctaRel = !empty($navCta['newTab']) ? 'noopener noreferrer' : null;
   @endphp
   <a href="{{ $locale === $defaultLocale ? '/' : "/$locale/" }}" class="navbar-brand text-decoration-none">
     @if($logoUrl)
@@ -18,6 +24,11 @@
           <a class="nav-link" href="{{ $item['href'] }}">{{ $item['title'] }}</a>
         </li>
       @endforeach
+      @if($ctaEnabled)
+        <li class="nav-item">
+          <a class="nav-cta" href="{{ $ctaHref }}" target="{{ $ctaTarget }}" @if($ctaRel) rel="{{ $ctaRel }}" @endif>{{ $ctaText }}</a>
+        </li>
+      @endif
     </ul>
     <details class="nav-mobile">
       <summary class="nav-mobile-toggle" aria-label="Toggle navigation">
@@ -34,7 +45,14 @@
             <a class="nav-link" href="{{ $item['href'] }}">{{ $item['title'] }}</a>
           </li>
         @endforeach
+        @if($ctaEnabled)
+          <li class="nav-item">
+            <a class="nav-cta" href="{{ $ctaHref }}" target="{{ $ctaTarget }}" @if($ctaRel) rel="{{ $ctaRel }}" @endif>{{ $ctaText }}</a>
+          </li>
+        @endif
       </ul>
     </details>
+  @elseif($ctaEnabled)
+    <a class="nav-cta" href="{{ $ctaHref }}" target="{{ $ctaTarget }}" @if($ctaRel) rel="{{ $ctaRel }}" @endif>{{ $ctaText }}</a>
   @endif
 </nav>

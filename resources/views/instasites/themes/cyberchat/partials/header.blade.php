@@ -1,7 +1,11 @@
 @php
   $site    = $blueprint['site_name'] ?? 'Site';
-  $ctaText = $blueprint['theme']['cta']['text'] ?? 'New Project';
-  $ctaHref = $blueprint['theme']['cta']['href'] ?? '#';
+  $navCta = $blueprint['theme']['nav']['cta'] ?? [];
+  $ctaEnabled = !empty($navCta['enabled']);
+  $ctaText = $navCta['text'] ?? 'New Project';
+  $ctaHref = $navCta['href'] ?? '#';
+  $ctaTarget = !empty($navCta['newTab']) ? '_blank' : '_self';
+  $ctaRel = !empty($navCta['newTab']) ? 'noopener noreferrer' : null;
   $logoUrl = $blueprint['theme']['logoUrl'] ?? null;
 @endphp
 
@@ -21,7 +25,9 @@
       @foreach(($navItems ?? []) as $item)
         <a class="gen-link" href="{{ $item['href'] }}">{{ $item['title'] }}</a>
       @endforeach
-      <a class="gen-cta" href="{{ $ctaHref }}">{{ $ctaText }}</a>
+      @if($ctaEnabled)
+        <a class="gen-cta" href="{{ $ctaHref }}" target="{{ $ctaTarget }}" @if($ctaRel) rel="{{ $ctaRel }}" @endif>{{ $ctaText }}</a>
+      @endif
     </nav>
 
     {{-- Mobile --}}
@@ -38,7 +44,9 @@
         @foreach(($navItems ?? []) as $item)
           <a class="gen-link" href="{{ $item['href'] }}">{{ $item['title'] }}</a>
         @endforeach
-        <a class="gen-cta" href="{{ $ctaHref }}">{{ $ctaText }}</a>
+        @if($ctaEnabled)
+          <a class="gen-cta" href="{{ $ctaHref }}" target="{{ $ctaTarget }}" @if($ctaRel) rel="{{ $ctaRel }}" @endif>{{ $ctaText }}</a>
+        @endif
       </nav>
     </details>
   </div>

@@ -54,6 +54,12 @@ body.gen-body{
 .gen-hero-sub{margin:8px 0 18px;color:var(--muted)}
 .gen-hero-cta{display:inline-block;padding:12px 16px;border-radius:12px;text-decoration:none;background:
   linear-gradient(90deg, var(--primary), var(--accent)); color:#0a0d14;font-weight:800}
+.gen-cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.gen-hero-cta.ghost{
+  background:transparent;
+  color:var(--text);
+  border:1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+}
 .gen-badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .gen-badge{font-size:12px;color:var(--text);padding:6px 10px;border-radius:999px;border:1px solid color-mix(in srgb, var(--primary) 30%, transparent);background:rgba(255,255,255,0.03)}
 .gen-hero-art img{max-width:100%;border-radius:16px;border:1px solid var(--outline);box-shadow:0 20px 40px rgba(0,0,0,0.35)}
@@ -81,6 +87,24 @@ body.gen-body{
 @media(max-width:900px){.gen-features{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:520px){.gen-features{grid-template-columns:1fr}}
 .gen-feature{border:1px solid var(--outline);border-radius:12px;padding:12px;background:rgba(255,255,255,0.02)}
+
+/* Trust foldover */
+.gen-trust{
+  border-top:1px solid var(--outline);
+  border-bottom:1px solid var(--outline);
+  background:rgba(255,255,255,0.02);
+}
+.gen-trust-inner{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  padding:12px 0;
+  flex-wrap:wrap;
+}
+.gen-trust-text{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:14px}
+.gen-trust-logos{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.gen-trust-logos img{height:22px;width:auto;opacity:.9}
 
 /* Footer */
 .gen-footer{border-top:1px solid var(--outline);padding:18px 0;background:linear-gradient(90deg, rgba(168,85,247,0.06), rgba(37,99,235,0.06))}

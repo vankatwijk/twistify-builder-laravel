@@ -32,6 +32,7 @@ class SiteBuilderService
           'default_locale' => $default,
           'theme' => ['name'=> data_get($manifest,'theme','classic')],
       ]);
+      $blueprint = $this->normalizeBlueprint($blueprint);
       $theme     = Str::lower(data_get($blueprint, 'theme.name', data_get($manifest,'theme','classic')));
 
       if (!in_array($default, $locales, true)) $locales[] = $default;
@@ -106,9 +107,16 @@ class SiteBuilderService
   {
     $root    = rtrim(config('instasites.sites_root'), '/')."/{$hostname}";
     $public  = "{$root}/public";
-    $theme   = Str::lower(data_get($payload, 'blueprint.theme.name', 'classic'));
-    $locales = data_get($payload, 'locales', ['en']);
-    $default = data_get($payload, 'blueprint.default_locale', 'en');
+        $blueprint = $this->normalizeBlueprint((array) data_get($payload, 'blueprint', []));
+        $theme   = Str::lower(data_get($blueprint, 'theme.name', 'classic'));
+        $default = data_get($blueprint, 'default_locale', 'en');
+        $locales = data_get($payload, 'locales', [$default]);
+        if (!is_array($locales) || empty($locales)) {
+            $locales = [$default];
+        }
+        if (!in_array($default, $locales, true)) {
+            $locales[] = $default;
+        }
     $pages   = data_get($payload, 'pages', []);
     $posts   = data_get($payload, 'posts', []);
     $reset   = (bool) data_get($payload, 'reset', false);
@@ -124,8 +132,8 @@ class SiteBuilderService
       // Silently fail - favicon is optional
     }
 
-    $assetFlags = $this->copyThemeAssets($theme, "{$public}/assets/{$theme}", data_get($payload, 'blueprint.theme', []));
-    $this->renderAll($public, $theme, $locales, $default, $pages, $posts, $payload['blueprint'], $assetFlags);
+    $assetFlags = $this->copyThemeAssets($theme, "{$public}/assets/{$theme}", data_get($blueprint, 'theme', []));
+    $this->renderAll($public, $theme, $locales, $default, $pages, $posts, $blueprint, $assetFlags);
 
     // Feeds
     $this->makeSitemap($public, $hostname, $locales, $default, $pages, $posts);
@@ -136,6 +144,7 @@ class SiteBuilderService
       'theme'           => $theme,
       'locales'         => $locales,
       'default_locale'  => $default,
+            'blueprint'       => $blueprint,
       'pages'           => $pages,
       'posts'           => $posts,
       'built_at'        => now()->toIso8601String(),
@@ -553,6 +562,141 @@ class SiteBuilderService
         }
         usort($out, fn($a,$b) => $b['ts'] <=> $a['ts']); // newest first
         return $out;
+    }
+
+    private function normalizeBlueprint(array $blueprint): array
+    {
+        $defaultLocale = (string)($blueprint['default_locale'] ?? 'en');
+        $blueprint['default_locale'] = $defaultLocale;
+
+        $theme = is_array($blueprint['theme'] ?? null) ? $blueprint['theme'] : [];
+        $theme['name'] = Str::lower((string)($theme['name'] ?? 'classic'));
+
+        $themeNav = is_array($theme['nav'] ?? null) ? $theme['nav'] : [];
+        $legacyCta = is_array($theme['cta'] ?? null) ? $theme['cta'] : [];
+        $navCta = is_array($themeNav['cta'] ?? null) ? $themeNav['cta'] : [];
+
+        if (empty($navCta) && !empty($legacyCta)) {
+            $navCta = [
+                'enabled' => true,
+                'text' => $legacyCta['text'] ?? null,
+                'href' => $legacyCta['href'] ?? null,
+                'style' => $legacyCta['style'] ?? 'primary',
+                'newTab' => (bool)($legacyCta['newTab'] ?? false),
+            ];
+        }
+
+        $themeNav['includeBlog'] = $this->toBool($themeNav['includeBlog'] ?? false);
+        $themeNav['cta'] = [
+            'enabled' => $this->toBool($navCta['enabled'] ?? (!empty($navCta['text']) || !empty($navCta['href']))),
+            'text'    => $navCta['text'] ?? null,
+            'href'    => $navCta['href'] ?? null,
+            'style'   => $navCta['style'] ?? 'primary',
+            'newTab'  => $this->toBool($navCta['newTab'] ?? false),
+        ];
+        $theme['nav'] = $themeNav;
+
+        $themeHero = is_array($theme['hero'] ?? null) ? $theme['hero'] : [];
+        $legacyHero = is_array($blueprint['hero'] ?? null) ? $blueprint['hero'] : [];
+        $mergedHero = array_merge($legacyHero, $themeHero);
+
+        $theme['hero'] = [
+            'imageUrl'          => $mergedHero['imageUrl']
+                ?? $mergedHero['image']
+                ?? null,
+            'headline'          => $mergedHero['headline']
+                ?? $mergedHero['title']
+                ?? null,
+            'subheadline'       => $mergedHero['subheadline']
+                ?? $mergedHero['subtitle']
+                ?? null,
+            'ctaText'           => $mergedHero['ctaText']
+                ?? data_get($mergedHero, 'cta.text')
+                ?? data_get($mergedHero, 'cta_primary.text')
+                ?? null,
+            'ctaHref'           => $mergedHero['ctaHref']
+                ?? data_get($mergedHero, 'cta.href')
+                ?? data_get($mergedHero, 'cta_primary.href')
+                ?? null,
+            'secondaryCtaText'  => $mergedHero['secondaryCtaText']
+                ?? data_get($mergedHero, 'secondaryCta.text')
+                ?? data_get($mergedHero, 'cta_secondary.text')
+                ?? null,
+            'secondaryCtaHref'  => $mergedHero['secondaryCtaHref']
+                ?? data_get($mergedHero, 'secondaryCta.href')
+                ?? data_get($mergedHero, 'cta_secondary.href')
+                ?? null,
+            'overlayOpacity'    => $this->normalizeOpacity($mergedHero['overlayOpacity'] ?? null),
+        ];
+
+        $trust = is_array($theme['trust'] ?? null) ? $theme['trust'] : [];
+        $logos = is_array($trust['logos'] ?? null) ? $trust['logos'] : [];
+        $theme['trust'] = [
+            'enabled'    => $this->toBool($trust['enabled'] ?? false),
+            'ratingText' => $trust['ratingText'] ?? null,
+            'statsText'  => $trust['statsText'] ?? null,
+            'logos'      => array_values(array_filter($logos, fn($logo) => is_string($logo) && $logo !== '')),
+        ];
+
+        $footer = is_array($theme['footer'] ?? null) ? $theme['footer'] : [];
+        $compliance = is_array($footer['compliance'] ?? null) ? $footer['compliance'] : [];
+        $footer['compliance'] = [
+            'show18Plus'      => $this->toBool($compliance['show18Plus'] ?? false),
+            'disclaimerText'  => $compliance['disclaimerText'] ?? null,
+            'responsibleLink' => $compliance['responsibleLink'] ?? null,
+        ];
+        $theme['footer'] = $footer;
+
+        $social = is_array($theme['social'] ?? null) ? $theme['social'] : [];
+        $theme['social'] = [
+            'facebook'  => $social['facebook'] ?? null,
+            'linkedin'  => $social['linkedin'] ?? null,
+            'x'         => $social['x'] ?? null,
+            'threads'   => $social['threads'] ?? null,
+            'instagram' => $social['instagram'] ?? null,
+        ];
+
+        $blueprint['theme'] = $theme;
+
+        return $blueprint;
+    }
+
+    private function toBool(mixed $value): bool
+    {
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        if (is_string($value)) {
+            return in_array(strtolower($value), ['1', 'true', 'yes', 'on'], true);
+        }
+
+        if (is_numeric($value)) {
+            return (int)$value === 1;
+        }
+
+        return false;
+    }
+
+    private function normalizeOpacity(mixed $value): ?float
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        if (!is_numeric($value)) {
+            return null;
+        }
+
+        $opacity = (float)$value;
+        if ($opacity < 0) {
+            return 0.0;
+        }
+        if ($opacity > 1) {
+            return 1.0;
+        }
+
+        return $opacity;
     }
 
 }

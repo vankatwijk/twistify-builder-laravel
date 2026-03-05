@@ -1,0 +1,73 @@
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body.galaxy-body{
+  background:
+    radial-gradient(1200px 680px at -10% -10%, color-mix(in srgb, var(--primary) 22%, transparent), transparent 65%),
+    radial-gradient(1000px 700px at 110% -10%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+  color:var(--text);
+  font:16px/1.65 Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+.container{width:min(1180px, 92vw);margin:0 auto}
+
+.galaxy-header{
+  position:sticky;top:0;z-index:80;
+  backdrop-filter:blur(10px);
+  background:color-mix(in srgb, var(--bg) 86%, transparent);
+  border-bottom:1px solid var(--line);
+}
+.galaxy-nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+.galaxy-logo{display:inline-flex;align-items:center;gap:10px;color:var(--text);text-decoration:none;font-weight:800}
+.galaxy-logo img{height:34px;width:auto;display:block}
+.galaxy-logo-dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(90deg,var(--primary),var(--accent));box-shadow:0 0 16px var(--accent)}
+.galaxy-menu{display:flex;gap:14px;flex-wrap:wrap}
+.galaxy-link{color:var(--text);text-decoration:none;padding:8px 10px;border:1px solid transparent;border-radius:10px;font-weight:600}
+.galaxy-link:hover{border-color:color-mix(in srgb, var(--primary) 40%, transparent);background:rgba(255,255,255,.03)}
+.galaxy-cta{padding:10px 16px;border-radius:999px;text-decoration:none;font-weight:800;background:linear-gradient(90deg,var(--primary),var(--accent));color:#041016}
+
+.galaxy-hero{border-bottom:1px solid var(--line)}
+.galaxy-hero-inner{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center;padding:34px 0}
+.galaxy-kicker{margin:0 0 10px;color:color-mix(in srgb, var(--primary) 75%, white);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.galaxy-hero h1{margin:0 0 14px;font-size:clamp(34px,5vw,56px);line-height:1.08;letter-spacing:-.02em}
+.galaxy-sub{margin:0 0 20px;color:var(--muted);max-width:60ch}
+.galaxy-actions{display:flex;gap:12px;flex-wrap:wrap}
+.galaxy-btn{display:inline-block;padding:12px 18px;border-radius:999px;text-decoration:none;font-weight:700}
+.galaxy-btn.primary{background:linear-gradient(90deg,var(--primary),var(--accent));color:#041016}
+.galaxy-btn.secondary{border:1px solid color-mix(in srgb, var(--primary) 45%, transparent);color:var(--text);background:rgba(255,255,255,.02)}
+.galaxy-hero-media{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.galaxy-hero-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,16,22,0) 0%,rgba(4,16,22,var(--hero-overlay,.35)) 100%)}
+.galaxy-hero-media img{display:block;width:100%;height:100%;object-fit:cover;min-height:280px}
+
+.galaxy-trust{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(255,255,255,.02)}
+.galaxy-trust-inner{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 0}
+.galaxy-trust-copy{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:14px}
+.galaxy-trust-logos{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.galaxy-trust-logos img{height:22px;width:auto;opacity:.9}
+
+.galaxy-main{padding:30px 0 50px}
+.galaxy-panel{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)), var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px 22px;box-shadow:0 16px 44px rgba(0,0,0,.34)}
+.galaxy-panel h1,.galaxy-panel h2,.galaxy-panel h3{line-height:1.25}
+.galaxy-panel a{color:color-mix(in srgb, var(--primary) 75%, white);text-decoration:none}
+.galaxy-panel a:hover{text-decoration:underline}
+
+.galaxy-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:12px}
+.galaxy-card{border:1px solid var(--line);border-radius:14px;padding:14px;background:rgba(255,255,255,.02)}
+.galaxy-card h2,.galaxy-card h3{margin:0 0 8px;font-size:20px}
+.galaxy-card p{margin:0 0 10px;color:var(--muted)}
+.galaxy-readmore{font-weight:700}
+.galaxy-meta{color:var(--muted);font-size:13px}
+
+.galaxy-footer{border-top:1px solid var(--line);padding:18px 0;background:rgba(255,255,255,.02)}
+.galaxy-footer-inner{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.galaxy-footer p{margin:0;color:var(--muted);font-size:13px}
+.galaxy-social{display:flex;gap:10px;flex-wrap:wrap}
+.galaxy-social a{color:var(--text);font-size:13px;text-decoration:none;padding:6px 10px;border:1px solid var(--line);border-radius:999px}
+
+.galaxy-lang{position:fixed;right:16px;bottom:16px;display:flex;gap:8px;z-index:100}
+.galaxy-pill{display:inline-block;padding:6px 10px;border-radius:999px;color:var(--text);text-decoration:none;font-size:12px;border:1px solid color-mix(in srgb, var(--primary) 40%, transparent);background:rgba(255,255,255,.02);backdrop-filter:blur(8px)}
+.galaxy-pill.active,.galaxy-pill:hover{background:linear-gradient(90deg,var(--primary),var(--accent));color:#041016;border-color:transparent}
+
+@media (max-width:920px){
+  .galaxy-hero-inner{grid-template-columns:1fr}
+  .galaxy-menu{display:none}
+}

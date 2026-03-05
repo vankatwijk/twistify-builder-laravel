@@ -265,6 +265,49 @@ img, svg, video, canvas {
 }
 
 /* ---------------------------------- */
+/* Trust Foldover                      */
+/* ---------------------------------- */
+.gen-trust {
+  border-top: 1px solid var(--outline);
+  border-bottom: 1px solid var(--outline);
+  background: var(--bg);
+}
+
+.gen-trust-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 0;
+  flex-wrap: wrap;
+}
+
+.gen-trust-copy {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.gen-trust-copy p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.gen-trust-logos {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.gen-trust-logos img {
+  height: 22px;
+  width: auto;
+  opacity: .9;
+}
+
+/* ---------------------------------- */
 /* Main Content / Cards               */
 /* ---------------------------------- */
 .gen-main {

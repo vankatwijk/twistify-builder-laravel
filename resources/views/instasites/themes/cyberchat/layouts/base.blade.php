@@ -1,12 +1,12 @@
 @php $themeName = strtolower($blueprint['theme']['name'] ?? 'general'); @endphp
 @php
-  $ctaText = $blueprint['theme']['cta']['text'] ?? 'New Project';
-  $ctaHref = $blueprint['theme']['cta']['href'] ?? '#';
+  $ctaText = $blueprint['theme']['nav']['cta']['text'] ?? 'New Project';
+  $ctaHref = $blueprint['theme']['nav']['cta']['href'] ?? '#';
 
-  $title = $blueprint['theme']['hero']['title'] ?? 'Chat-style, clean, and fast.';
-  $sub   = $blueprint['theme']['hero']['subtitle'] ?? 'A minimal, dark UI with emerald accents—optimized for readability and speed.';
-  $cta1  = $blueprint['theme']['hero']['cta_primary'] ?? ['text' => $ctaText, 'href' => $ctaHref];
-  $cta2  = $blueprint['theme']['hero']['cta_secondary'] ?? ['text' => 'Docs', 'href' => '#features'];
+  $title = $blueprint['theme']['hero']['headline'] ?? 'Chat-style, clean, and fast.';
+  $sub   = $blueprint['theme']['hero']['subheadline'] ?? 'A minimal, dark UI with emerald accents—optimized for readability and speed.';
+  $cta1  = ['text' => ($blueprint['theme']['hero']['ctaText'] ?? $ctaText), 'href' => ($blueprint['theme']['hero']['ctaHref'] ?? $ctaHref)];
+  $cta2  = ['text' => ($blueprint['theme']['hero']['secondaryCtaText'] ?? 'Docs'), 'href' => ($blueprint['theme']['hero']['secondaryCtaHref'] ?? '#features')];
 @endphp
 {{-- Bootstrap, vendor CSS, etc. should come first --}}
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -178,5 +178,6 @@
   @includeIf("instasites.themes.$themeName.partials.features")
 </main>
 
+@includeIf("instasites.themes.$themeName.partials.trust")
 @includeIf("instasites.themes.$themeName.partials.footer")
 @includeIf("instasites.themes.$themeName.partials.lang-switcher")

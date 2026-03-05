@@ -32,6 +32,16 @@
   @endphp
   <div class="container">
     <p>&copy; {{ date('Y') }} {{ $siteName }}. All rights reserved.</p>
+    @php $compliance = $bp['theme']['footer']['compliance'] ?? []; @endphp
+    @if(!empty($compliance['show18Plus']) || !empty($compliance['disclaimerText']))
+      <p>
+        @if(!empty($compliance['show18Plus']))<strong>18+</strong> · @endif
+        {{ $compliance['disclaimerText'] ?? 'Please play responsibly.' }}
+        @if(!empty($compliance['responsibleLink']))
+          <a href="{{ $compliance['responsibleLink'] }}" target="_blank" rel="noopener">Learn more</a>
+        @endif
+      </p>
+    @endif
     @if(!empty($social))
       <div>
         @foreach($social as $s)

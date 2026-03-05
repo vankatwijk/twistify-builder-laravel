@@ -122,6 +122,23 @@ nav .container {
   color: #0066cc;
 }
 
+.nav-cta {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #0066cc;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.nav-cta:hover {
+  background: #0052a3;
+  color: #fff;
+  text-decoration: none;
+}
+
 /* Hero Section */
 .classic-hero {
   background: #f8f9fa;
@@ -154,6 +171,70 @@ nav .container {
   line-height: 1.6;
   color: #666;
   margin: 20px 0 0;
+}
+
+.classic-hero-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.classic-hero-btn {
+  display: inline-block;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: #0066cc;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.classic-hero-btn.ghost {
+  background: transparent;
+  border: 1px solid #0066cc;
+  color: #0066cc;
+}
+
+.classic-trust {
+  border-top: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
+  background: #fff;
+}
+
+.classic-trust-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 0;
+  flex-wrap: wrap;
+}
+
+.classic-trust-copy {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.classic-trust-copy p {
+  margin: 0;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.classic-trust-logos {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.classic-trust-logos img {
+  width: auto;
+  height: 24px;
+  margin: 0;
+  opacity: 0.8;
 }
 
 .classic-hero-image {

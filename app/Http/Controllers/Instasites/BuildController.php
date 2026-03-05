@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Instasites;
 use App\Http\Controllers\Controller;
 use App\Services\Instasites\SiteBuilderService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class BuildController extends Controller
 {
@@ -77,6 +76,36 @@ class BuildController extends Controller
           'blueprint.theme.accentColor'  => 'nullable|string',
           'blueprint.theme.font'      => 'nullable|string',
           'blueprint.theme.nav'       => 'nullable|array',
+          'blueprint.theme.nav.includeBlog' => 'nullable',
+          'blueprint.theme.nav.items'  => 'nullable|array',
+          'blueprint.theme.nav.items.*.title' => 'nullable|string',
+          'blueprint.theme.nav.items.*.slug' => 'nullable|string',
+          'blueprint.theme.nav.cta' => 'nullable|array',
+          'blueprint.theme.nav.cta.enabled' => 'nullable',
+          'blueprint.theme.nav.cta.text' => 'nullable|string',
+          'blueprint.theme.nav.cta.href' => 'nullable|string',
+          'blueprint.theme.nav.cta.style' => 'nullable|string',
+          'blueprint.theme.nav.cta.newTab' => 'nullable',
+          'blueprint.theme.hero'      => 'nullable|array',
+          'blueprint.theme.hero.imageUrl' => 'nullable|string|url',
+          'blueprint.theme.hero.headline' => 'nullable|string',
+          'blueprint.theme.hero.subheadline' => 'nullable|string',
+          'blueprint.theme.hero.ctaText' => 'nullable|string',
+          'blueprint.theme.hero.ctaHref' => 'nullable|string',
+          'blueprint.theme.hero.secondaryCtaText' => 'nullable|string',
+          'blueprint.theme.hero.secondaryCtaHref' => 'nullable|string',
+          'blueprint.theme.hero.overlayOpacity' => 'nullable|numeric|min:0|max:1',
+          'blueprint.theme.trust' => 'nullable|array',
+          'blueprint.theme.trust.enabled' => 'nullable',
+          'blueprint.theme.trust.ratingText' => 'nullable|string',
+          'blueprint.theme.trust.statsText' => 'nullable|string',
+          'blueprint.theme.trust.logos' => 'nullable|array',
+          'blueprint.theme.trust.logos.*' => 'nullable|string|url',
+          'blueprint.theme.footer' => 'nullable|array',
+          'blueprint.theme.footer.compliance' => 'nullable|array',
+          'blueprint.theme.footer.compliance.show18Plus' => 'nullable',
+          'blueprint.theme.footer.compliance.disclaimerText' => 'nullable|string',
+          'blueprint.theme.footer.compliance.responsibleLink' => 'nullable|string|url',
           'blueprint.theme.social'    => 'nullable|array',
           'blueprint.theme.social.facebook'  => 'nullable|string|url',
           'blueprint.theme.social.linkedin'  => 'nullable|string|url',

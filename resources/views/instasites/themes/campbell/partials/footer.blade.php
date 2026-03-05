@@ -62,6 +62,16 @@
 <footer class="gen-footer">
   <div class="container gen-footer-inner">
     <div class="muted">© {{ $year }} {{ $siteName }} — All rights reserved.</div>
+    @php $compliance = $bp['theme']['footer']['compliance'] ?? []; @endphp
+    @if(!empty($compliance['show18Plus']) || !empty($compliance['disclaimerText']))
+      <div class="muted" style="margin-inline: 16px;">
+        @if(!empty($compliance['show18Plus']))18+ · @endif
+        {{ $compliance['disclaimerText'] ?? 'Play responsibly.' }}
+        @if(!empty($compliance['responsibleLink']))
+          <a class="gen-link" href="{{ $compliance['responsibleLink'] }}" target="_blank" rel="noopener">Help</a>
+        @endif
+      </div>
+    @endif
     <div class="gen-menu">
       @foreach($social as $s)
         @php
