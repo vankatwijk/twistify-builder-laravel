@@ -127,7 +127,12 @@ class SiteBuilderService
     // Generate favicon
     try {
       $faviconGenerator = new FaviconGeneratorService();
-      $faviconGenerator->generate($public, $hostname);
+            $faviconGenerator->generate($public, $hostname, null, [
+                'siteName' => (string) data_get($blueprint, 'site_name', $hostname),
+                'theme' => (string) data_get($blueprint, 'theme.name', 'classic'),
+                'primaryColor' => data_get($blueprint, 'theme.primaryColor'),
+                'accentColor' => data_get($blueprint, 'theme.accentColor'),
+            ]);
     } catch (\Throwable $e) {
       // Silently fail - favicon is optional
     }
