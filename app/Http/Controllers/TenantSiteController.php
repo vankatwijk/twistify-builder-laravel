@@ -10,8 +10,8 @@ class TenantSiteController extends Controller
 {
     public function serve(Request $request, ?string $path = null)
     {
-        $builderHost = strtolower(config('instasites.builder_host', 'builder.twistify.io'));
-        $host = strtolower($request->getHost());
+        $builderHost = $this->normalizeHost((string) config('instasites.builder_host', 'builder.twistify.io'));
+        $host = $this->normalizeHost($request->getHost());
 
         // Builder host should be handled by normal Laravel routes/controllers
         if ($host === $builderHost) {
@@ -26,9 +26,18 @@ class TenantSiteController extends Controller
         }
 
         $sitesRoot = rtrim(config('instasites.sites_root', env('SITES_ROOT', '/opt/bitnami/apache/htdocs/sites')), '/');
-        $root = $sitesRoot . '/' . $host . '/public';
+        $hostCandidates = $this->hostCandidates($host);
+        $root = null;
 
-        if (!is_dir($root)) {
+        foreach ($hostCandidates as $candidateHost) {
+            $candidateRoot = $sitesRoot . '/' . $candidateHost . '/public';
+            if (is_dir($candidateRoot)) {
+                $root = $candidateRoot;
+                break;
+            }
+        }
+
+        if ($root === null) {
             abort(404, 'Site folder not found.');
         }
 
@@ -57,5 +66,38 @@ class TenantSiteController extends Controller
 
         // Return file (simple, no caching logic for now)
         return response(File::get($full), 200, ['Content-Type' => $mime]);
+    }
+
+    private function normalizeHost(string $value): string
+    {
+        $value = strtolower(trim($value));
+
+        if (str_contains($value, '://')) {
+            $parsed = parse_url($value, PHP_URL_HOST);
+            if (is_string($parsed) && $parsed !== '') {
+                $value = $parsed;
+            }
+        }
+
+        $value = preg_replace('/:\d+$/', '', $value) ?? $value;
+        $value = rtrim($value, '.');
+
+        return $value;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function hostCandidates(string $host): array
+    {
+        $candidates = [$host];
+
+        if (str_starts_with($host, 'www.')) {
+            $candidates[] = substr($host, 4);
+        } else {
+            $candidates[] = 'www.' . $host;
+        }
+
+        return array_values(array_unique(array_filter($candidates)));
     }
 }

@@ -17,6 +17,8 @@ class BuildController extends Controller
       ?? $data['blueprint']['primary_domain']
       ?? null;
 
+    $host = is_string($host) ? $this->normalizeHost($host) : null;
+
     if (!$host) return response()->json(['ok'=>false,'error'=>'hostname required'], 422);
 
     // --- Single-locale build support ---
@@ -55,7 +57,7 @@ class BuildController extends Controller
   }
 
   public function reset(Request $r){
-    $host = $r->input('hostname');
+    $host = $this->normalizeHost((string) $r->input('hostname', ''));
     if (!$host) return response()->json(['ok'=>false,'error'=>'hostname required'], 422);
 
     $deleted = $this->builder->reset($host);
@@ -170,8 +172,8 @@ class BuildController extends Controller
           'blueprint'         => 'array', // optional override (theme/colors/nav)
       ]);
 
-      [$ok,$res] = $this->builder->upsertPost(
-          $data['hostname'],
+        [$ok,$res] = $this->builder->upsertPost(
+          $this->normalizeHost($data['hostname']),
           $data['post'],
           $data['locale'] ?? null,
           $data['blueprint'] ?? null
@@ -181,4 +183,20 @@ class BuildController extends Controller
         ? response()->json(['ok'=>true]+$res)
         : response()->json(['ok'=>false,'error'=>$res['error'] ?? 'failed'], 422);
   }
+
+    private function normalizeHost(string $value): string
+    {
+      $value = strtolower(trim($value));
+
+      if (str_contains($value, '://')) {
+        $parsed = parse_url($value, PHP_URL_HOST);
+        if (is_string($parsed) && $parsed !== '') {
+          $value = $parsed;
+        }
+      }
+
+      $value = preg_replace('/:\d+$/', '', $value) ?? $value;
+
+      return rtrim($value, '.');
+    }
 }
