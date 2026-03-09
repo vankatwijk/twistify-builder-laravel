@@ -52,6 +52,8 @@ Route::middleware('builder.key')->group(function () {
       $sitesRoot = rtrim((string) config('instasites.sites_root', ''), '/');
       $paths = [];
       $resolved = null;
+    $indexChecks = [];
+    $topLevelEntries = [];
 
       foreach ($hostCandidates as $candidateHost) {
           $path = $sitesRoot . '/' . $candidateHost . '/public';
@@ -59,6 +61,30 @@ Route::middleware('builder.key')->group(function () {
           $paths[] = ['host' => $candidateHost, 'path' => $path, 'exists' => $exists];
           if ($exists && $resolved === null) {
               $resolved = $path;
+          }
+      }
+
+      if (is_string($resolved) && $resolved !== '') {
+          $indexChecks['public_index_html'] = is_file($resolved . '/index.html');
+
+          $entries = @scandir($resolved);
+          if (is_array($entries)) {
+              foreach ($entries as $entry) {
+                  if ($entry === '.' || $entry === '..') {
+                      continue;
+                  }
+
+                  $fullPath = $resolved . '/' . $entry;
+
+                  if (is_dir($fullPath)) {
+                      $indexChecks[$entry . '_index_html'] = is_file($fullPath . '/index.html');
+                  }
+
+                  $topLevelEntries[] = [
+                      'name' => $entry,
+                      'type' => is_dir($fullPath) ? 'dir' : 'file',
+                  ];
+              }
           }
       }
 
@@ -71,6 +97,8 @@ Route::middleware('builder.key')->group(function () {
           'host_candidates' => $hostCandidates,
           'checks' => $paths,
           'resolved_public_path' => $resolved,
+          'index_checks' => $indexChecks,
+          'public_top_level' => $topLevelEntries,
       ]);
   });
 
